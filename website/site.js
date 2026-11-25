@@ -1,4 +1,5 @@
 'use strict';
+const galleryAssets = new URL('./assets/', document.currentScript.src);
 const one = selector => document.querySelector(selector);
 const all = selector => [...document.querySelectorAll(selector)];
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -28,7 +29,7 @@ pin.onmouseleave=()=>showTip(false);
 pin.onkeydown=e=>{if(e.key==='Escape')showTip(false)};
 function selectSlide(index){
   const [name,file,caption,x,y]=slides[index], image=one('#shot');
-  image.src='./assets/'+file+'.png';image.alt='WinPulse — '+name;
+  image.src=new URL(file+'.png', galleryAssets).href;image.alt='WinPulse — '+name;
   tip.textContent=caption;showTip(false);
   one('.gallery').style.setProperty('--px',x+'%');
   one('.gallery').style.setProperty('--py',y+'%');
