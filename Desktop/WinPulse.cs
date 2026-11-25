@@ -21,8 +21,8 @@ using System.Windows.Media.Imaging;
 
 [assembly: AssemblyTitle("WinPulse")]
 [assembly: AssemblyProduct("WinPulse")]
-[assembly: AssemblyVersion("7.1.0.0")]
-[assembly: AssemblyFileVersion("7.1.0.0")]
+[assembly: AssemblyVersion("7.1.1.0")]
+[assembly: AssemblyFileVersion("7.1.1.0")]
 
 namespace WinPulseDesktop
 {
@@ -111,6 +111,7 @@ namespace WinPulseDesktop
             }
             using (Stream stream=Assembly.GetExecutingAssembly().GetManifestResourceStream("Shell.xaml"))
                 window=(Window)XamlReader.Load(stream);
+            AnimateMesh();
             WireButtons(window);
             catalog=json.Deserialize<Catalog>(File.ReadAllText(Path.Combine(Root,@"Main\Help\catalog.json"),Encoding.UTF8));
             if(catalog.schemaVersion!=1 || catalog.blocks==null || catalog.blocks.Length==0) throw new InvalidDataException("Проверь файл Main\\Help\\catalog.json.");
@@ -150,7 +151,7 @@ namespace WinPulseDesktop
         static Button Button(string title,Action click,bool primary=false)
         {
             var b=new Button {Content=title,Margin=new Thickness(0,4,8,4)};
-            if(primary){b.Background=Color("#C25C4375");b.Foreground=Color("#FBF4FF");b.FontWeight=FontWeights.SemiBold;}
+            if(primary){b.Background=Color("#CF51495F");b.Foreground=Color("#FBF4FF");b.FontWeight=FontWeights.SemiBold;}
             b.Click+=delegate { try{click();}catch(Exception ex){MessageBox.Show(ex.Message,"WinPulse",MessageBoxButton.OK,MessageBoxImage.Warning);} };
             return b;
         }
@@ -222,7 +223,7 @@ namespace WinPulseDesktop
             generation++;StopReader();hardwareRows=null;
             SelectPill(links[page]);
             if(!snapshot)QueueReveal();
-            foreach(var pair in links)pair.Value.Background=Color(pair.Key==page?"#AD503C65":"#001C1824");
+            foreach(var pair in links)pair.Value.Background=Color(pair.Key==page?"#BA494258":"#001C1824");
             Find<TextBlock>("Heading").Text=page;
             string[] intros={"Состояние рабочего места и быстрый доступ к настройкам.",
                 "Посмотри состав режима перед запуском. Применимость проверит движок на этом ПК.",
@@ -386,13 +387,23 @@ namespace WinPulseDesktop
                 if(check){
                     SessionView.CheckOffline();
                     ui.CheckWorkspacePages();
-                    foreach(string page in Pages.Concat(new[]{Pages[0]}))ui.Navigate(page);
-                    if(args.Contains("--preview")){ui.hardware=ReadHardware();ui.DrawHardware();}
-                    if(args.Contains("--profiles-preview"))ui.Navigate(Pages[1]);
-                    if(args.Contains("--catalog-preview"))ui.Navigate(Pages[2]);
+                    foreach(string section in Pages.Concat(new[]{Pages[0]}))ui.Navigate(section);
+                    var previews=new Dictionary<string,string>{
+                        {"--preview",Pages[0]},{"--profiles-preview",Pages[1]},
+                        {"--catalog-preview",Pages[2]},{"--background-preview",Pages[4]},
+                        {"--restore-preview",Pages[5]},{"--help-preview",Pages[6]},
+                        {"--diagnostics-preview",Pages[7]}
+                    };
+                    string page=null;
+                    bool capture=args.Length==3 && previews.TryGetValue(args[1],out page);
+                    if(args.Length!=1 && !capture)throw new ArgumentException("Неизвестный режим снимка.");
+                    if(capture){
+                        if(page==Pages[0])ui.hardware=ReadHardware();
+                        ui.Navigate(page);
+                    }
                     var view=(FrameworkElement)ui.window.Content;
                     view.Measure(new Size(1320,816));view.Arrange(new Rect(0,0,1320,816));view.UpdateLayout();ui.SelectPill(ui.links[ui.Find<TextBlock>("Heading").Text]);view.UpdateLayout();
-                    if(args.Length==3 && (args[1]=="--preview" || args[1]=="--profiles-preview" || args[1]=="--catalog-preview")){
+                    if(capture){
                         var bitmap=new RenderTargetBitmap(1320,816,96,96,PixelFormats.Pbgra32);
                         bitmap.Render((Visual)ui.window.Content);var encoder=new PngBitmapEncoder();
                         encoder.Frames.Add(BitmapFrame.Create(bitmap));using(var stream=File.Create(args[2]))encoder.Save(stream);

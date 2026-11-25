@@ -17,6 +17,23 @@ namespace WinPulseDesktop
 {
     sealed partial class Shell
     {
+        void AnimateMesh()
+        {
+            var transform=(TranslateTransform)Find<FrameworkElement>("Mesh").RenderTransform;
+            EventHandler update=delegate {
+                transform.BeginAnimation(TranslateTransform.XProperty,null);
+                if(!window.IsActive || !Motion || snapshot)return;
+                var drift=new DoubleAnimation(0,32,TimeSpan.FromSeconds(18)){
+                    RepeatBehavior=RepeatBehavior.Forever,
+                    EasingFunction=new SineEase{EasingMode=EasingMode.EaseInOut}
+                };
+                Timeline.SetDesiredFrameRate(drift,15);
+                transform.BeginAnimation(TranslateTransform.XProperty,drift);
+            };
+            window.Activated+=update;
+            window.Deactivated+=update;
+        }
+
         static DoubleAnimation Tween(double from,double to,int ms,int delay=0)
         {
             return new DoubleAnimation(from,to,TimeSpan.FromMilliseconds(ms)){
@@ -90,14 +107,14 @@ namespace WinPulseDesktop
                 if(exp!=null && exp.Header is TextBlock){var header=(TextBlock)exp.Header;exp.Header=null;exp.Header=HeadingIcon(header);}
                 panel.Children.Add(child==children[0] && text!=null && text.FontWeight==FontWeights.SemiBold?HeadingIcon(text):child);
             }
-            var top=new GradientStop(Tint("#A89170A8"),0);
+            var top=new GradientStop(Tint("#987C768F"),0);
             var edge=new LinearGradientBrush{StartPoint=new Point(0,0),EndPoint=new Point(.12,1)};
-            edge.GradientStops.Add(top);edge.GradientStops.Add(new GradientStop(Tint("#534A355E"),1));
-            var card=new Border{Tag="WinPulseCard",BorderBrush=edge,BorderThickness=new Thickness(1),Background=Color("#95312740"),
+            edge.GradientStops.Add(top);edge.GradientStops.Add(new GradientStop(Tint("#574E495F"),1));
+            var card=new Border{Tag="WinPulseCard",BorderBrush=edge,BorderThickness=new Thickness(1),Background=Color("#AA292538"),
                 Padding=new Thickness(18,12,18,12),CornerRadius=new CornerRadius(12),Margin=new Thickness(1,1,6,12),Child=panel,
                 Effect=new DropShadowEffect{BlurRadius=9,ShadowDepth=2,Direction=270,Opacity=.23}};
             Action<bool> glow=over=>{
-                var dest=Tint(over?"#FFC796FF":"#A89170A8");var current=top.Color;
+                var dest=Tint(over?"#FFD4C8EB":"#987C768F");var current=top.Color;
                 top.Color=dest;
                 if(Motion)top.BeginAnimation(GradientStop.ColorProperty,new ColorAnimation(current,dest,TimeSpan.FromMilliseconds(180)){
                     EasingFunction=new CubicEase{EasingMode=EasingMode.EaseOut},FillBehavior=FillBehavior.Stop});
@@ -110,7 +127,7 @@ namespace WinPulseDesktop
         static Border Badge(string label)
         {
             return new Border{CornerRadius=new CornerRadius(10),BorderThickness=new Thickness(1),BorderBrush=Color("#706F587F"),
-                Background=Color("#66281C36"),Padding=new Thickness(9,2,9,2),Margin=new Thickness(0,1,7,6),
+                Background=Color("#86242134"),Padding=new Thickness(9,2,9,2),Margin=new Thickness(0,1,7,6),
                 Child=new TextBlock{Text=label,Foreground=Color("#E5CFF4"),FontSize=12}};
         }
         static IEnumerable<FrameworkElement> Descendants(DependencyObject root)
