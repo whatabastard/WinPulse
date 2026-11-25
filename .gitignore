@@ -1,0 +1,11 @@
+/Backups/
+/Logs/
+/.run
+/.agreement_accepted
+/.user_preference
+*.exe
+*.pdb
+__pycache__/
+.vs/
+.vscode/
+*.zip

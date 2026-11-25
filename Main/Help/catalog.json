@@ -1,0 +1,2918 @@
+{
+  "schemaVersion": 1,
+  "modes": {
+    "LITE": "Начальная проба. Меняет в том числе питание, сеть, задачи и выборочный набор встроенных приложений. Удаление пакетов имеет ограничения отката.",
+    "MINIMUM": "Более широкий набор. Включает службы, автозагрузку и операции с приложениями. Перед применением проверь список удалений, особенно на рабочем ПК.",
+    "MEDIUM": "Добавляет к MINIMUM игровые настройки, оформление и обслуживание хранилища. Выдели время на обслуживание и проверь необратимые действия.",
+    "WORK": "Настраивает среду рабочего ПК, визуал и приоритеты. Проверь службы и приложения, необходимые для печати, связи и корпоративного ПО.",
+    "MAXIMUM": "Расширенный режим, включая изменения загрузки, драйверов и защитных функций. Возможны несовместимость с античитами и проблемы загрузки. Изучай вложенные блоки до выбора.",
+    "EXPERIMENTAL": "Отдельные эксперименты по одному. Зафиксируй исходное состояние, способ возврата и конкретный симптом. После перезагрузки повтори тот же замер."
+  },
+  "modeBlocks": {
+    "LITE": [
+      "B01",
+      "B02",
+      "B04",
+      "B06",
+      "B07",
+      "B17",
+      "B35",
+      "B61",
+      "B62"
+    ],
+    "MINIMUM": [
+      "B01",
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B09",
+      "B10",
+      "B14",
+      "B17",
+      "B18",
+      "B19",
+      "B35",
+      "B61",
+      "B62",
+      "B63",
+      "B64",
+      "B69"
+    ],
+    "MEDIUM": [
+      "B01",
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B09",
+      "B10",
+      "B12",
+      "B13",
+      "B14",
+      "B16",
+      "B17",
+      "B18",
+      "B19",
+      "B20",
+      "B22",
+      "B35",
+      "B61",
+      "B62",
+      "B63",
+      "B64",
+      "B65",
+      "B69"
+    ],
+    "WORK": [
+      "B01",
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B09",
+      "B10",
+      "B12",
+      "B14",
+      "B15",
+      "B16",
+      "B17",
+      "B18",
+      "B19",
+      "B20",
+      "B27",
+      "B35",
+      "B61",
+      "B62",
+      "B63",
+      "B64",
+      "B69"
+    ],
+    "MAXIMUM": [
+      "B01",
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07",
+      "B08",
+      "B09",
+      "B10",
+      "B11",
+      "B12",
+      "B13",
+      "B14",
+      "B15",
+      "B16",
+      "B17",
+      "B18",
+      "B19",
+      "B20",
+      "B21",
+      "B22",
+      "B23",
+      "B24",
+      "B25",
+      "B26",
+      "B27",
+      "B28",
+      "B29",
+      "B30",
+      "B31",
+      "B32",
+      "B33",
+      "B34",
+      "B35",
+      "B36",
+      "B37",
+      "B38",
+      "B39",
+      "B40",
+      "B41",
+      "B42",
+      "B43",
+      "B44",
+      "B45",
+      "B46",
+      "B47",
+      "B48",
+      "B61",
+      "B62",
+      "B63",
+      "B64",
+      "B65",
+      "B66",
+      "B67",
+      "B68",
+      "B69"
+    ],
+    "EXPERIMENTAL": [
+      "B49",
+      "B50",
+      "B51",
+      "B52",
+      "B53",
+      "B54",
+      "B55",
+      "B56",
+      "B57",
+      "B58",
+      "B59",
+      "B60"
+    ]
+  },
+  "visualProfiles": {
+    "Auto": "Режим выбирает оформление. MEDIUM учитывает характеристики ПК, WORK использует рабочий профиль.",
+    "MotionOnly": "Отключает анимацию сворачивания и разворачивания окон. Сохраняет задержку меню, прозрачность, плотность строк и экран входа. Подходит для первой пробы.",
+    "Keep": "Пропускает VISUAL и VISUAL_AGG. Сохраняет текущее оформление; прочие блоки режима, в том числе UX, выбираются отдельно.",
+    "Comfort": "Выставляет задержку подменю 200 мс. Сохраняет анимацию окон и плотность строк. Применяет общие изменения оформления.",
+    "Work": "Выставляет задержку подменю 100 мс и включает прозрачность. Сохраняет анимацию окон. Применяет общие изменения оформления.",
+    "Balanced": "Меню через 100 мс, компактные строки Проводника и сворачивание без анимации. Отдельный блок VISUAL_AGG выключает прозрачность, если выбран.",
+    "Performance": "Применяет компактный вид и набор сокращённых визуальных эффектов. В сочетании с VISUAL_AGG отключает прозрачность и задаёт нулевую задержку меню. Внешний вид меняется сильнее всего."
+  },
+  "blocks": [
+    {
+      "id": "B01",
+      "key": "TELEMETRY",
+      "title": "Телеметрия, реклама, DiagTrack",
+      "category": "safe",
+      "context": "Режимы: LIT MIN MED WRK MAX     Откат: W + U (службы)\n      Guard: нет, приватность безопасна на любой конфигурации",
+      "explanation": "Уменьшает сбор диагностических данных и рекламные рекомендации. Часть диагностических функций Windows может перестать собирать сведения.",
+      "operations": [
+        {
+          "id": 1,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "DiagTrack = disabled",
+          "group": "001"
+        },
+        {
+          "id": 2,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "dmwappushservice = disabled",
+          "group": "002"
+        },
+        {
+          "id": 3,
+          "kind": "STOP",
+          "help": "Останавливает службу в текущей сессии.",
+          "description": "DiagTrack",
+          "group": "003"
+        },
+        {
+          "id": 4,
+          "kind": "STOP",
+          "help": "Останавливает службу в текущей сессии.",
+          "description": "dmwappushservice",
+          "group": "004"
+        },
+        {
+          "id": 5,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Policies\\Windows\\DataCollection AllowTelemetry = 0",
+          "group": "005"
+        },
+        {
+          "id": 6,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "CurrentVersion\\Policies\\DataCollection AllowTelemetry = 0",
+          "group": "006"
+        },
+        {
+          "id": 7,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Policies\\Windows\\DataCollection DoNotShowFeedbackNotifications = 1",
+          "group": "007"
+        },
+        {
+          "id": 8,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU AdvertisingInfo Enabled = 0",
+          "group": "008"
+        },
+        {
+          "id": 9,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Explorer\\Advanced Start_TrackProgs = 0",
+          "group": "009"
+        },
+        {
+          "id": 10,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Siuf\\Rules NumberOfSIUFInPeriod = 0",
+          "group": "010"
+        },
+        {
+          "id": 11,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU ContentDeliveryManager SubscribedContent-310093Enabled = 0",
+          "group": "011"
+        },
+        {
+          "id": 12,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU ContentDeliveryManager SubscribedContent-338387Enabled = 0",
+          "group": "012"
+        },
+        {
+          "id": 13,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU ContentDeliveryManager SubscribedContent-338388Enabled = 0",
+          "group": "013"
+        },
+        {
+          "id": 14,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU ContentDeliveryManager SubscribedContent-338389Enabled = 0",
+          "group": "014"
+        },
+        {
+          "id": 15,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU ContentDeliveryManager SubscribedContent-338393Enabled = 0",
+          "group": "015"
+        },
+        {
+          "id": 16,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU ContentDeliveryManager SubscribedContent-353694Enabled = 0",
+          "group": "016"
+        },
+        {
+          "id": 17,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU ContentDeliveryManager SubscribedContent-353696Enabled = 0",
+          "group": "017"
+        },
+        {
+          "id": 18,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU ContentDeliveryManager SubscribedContent-353698Enabled = 0",
+          "group": "018"
+        },
+        {
+          "id": 19,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU ContentDeliveryManager SystemPaneSuggestionsEnabled = 0",
+          "group": "019"
+        },
+        {
+          "id": 20,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU ContentDeliveryManager SilentInstalledAppsEnabled = 0",
+          "group": "020"
+        },
+        {
+          "id": 21,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Policies\\Windows\\System EnableActivityFeed = 0",
+          "group": "021"
+        },
+        {
+          "id": 22,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Policies\\Windows\\System UploadUserActivities = 0",
+          "group": "022"
+        },
+        {
+          "id": 23,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Policies\\Windows\\AppCompat AITEnable = 0",
+          "group": "023"
+        },
+        {
+          "id": 24,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Policies\\Windows\\Windows Error Reporting Disabled = 1",
+          "group": "024"
+        }
+      ]
+    },
+    {
+      "id": "B02",
+      "key": "NET_STD",
+      "title": "Nagle, TTL, DNS-кэш, autotuning",
+      "category": "safe",
+      "context": "Режимы: LIT MIN MED WRK MAX     Откат: N + U\n      Guard: G_NETWORK (SOFT при активном Zapret)",
+      "explanation": "Меняет параметры сетевого стека и адаптеров. Проверяй на своём подключении в обычной нагрузке, включая VPN.",
+      "operations": [
+        {
+          "id": 25,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Tcpip\\Parameters\\Interfaces\\{GUID} TcpAckFrequency = 1 одна операция на ВСЕ активные адаптеры, журнал по каждому",
+          "group": "025"
+        },
+        {
+          "id": 26,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Tcpip\\Parameters\\Interfaces\\{GUID} TCPNoDelay = 1 то же; в корень Tcpip\\Parameters эти значения не работают",
+          "group": "026"
+        },
+        {
+          "id": 27,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Tcpip\\Parameters DefaultTTL = 64",
+          "group": "027"
+        },
+        {
+          "id": 28,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Dnscache\\Parameters CacheHashTableBucketSize = 1",
+          "group": "028"
+        },
+        {
+          "id": 29,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Dnscache\\Parameters CacheHashTableSize = 384",
+          "group": "029"
+        },
+        {
+          "id": 30,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Dnscache\\Parameters MaxCacheEntryTtlLimit = 86400",
+          "group": "030"
+        },
+        {
+          "id": 31,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Dnscache\\Parameters MaxSOACacheEntryTtlLimit = 300",
+          "group": "031"
+        },
+        {
+          "id": 32,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Multimedia\\SystemProfile NetworkThrottlingIndex = 4294967295",
+          "group": "032"
+        },
+        {
+          "id": 33,
+          "kind": "TCP",
+          "help": "Меняет поведение сетевого стека. Проверь обычную сеть и VPN.",
+          "description": "autotuninglevel = normal",
+          "group": "033"
+        },
+        {
+          "id": 34,
+          "kind": "FLUSH",
+          "help": "Сбрасывает текущее состояние. При последующих обращениях оно создаётся заново.",
+          "description": "dns",
+          "group": "034"
+        }
+      ]
+    },
+    {
+      "id": "B03",
+      "key": "NET_PORTS",
+      "title": "Динамические порты и backlog",
+      "category": "safe",
+      "context": "Режимы: MIN MED WRK MAX         Откат: N + U\n      Guard: G_NETWORK",
+      "explanation": "Меняет диапазоны и параметры сетевых соединений. Нужен конкретный симптом с большим числом соединений; обычная загрузка сайтов мало о нём говорит.",
+      "operations": [
+        {
+          "id": 35,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Tcpip\\Parameters MaxUserPort = 65534",
+          "group": "035"
+        },
+        {
+          "id": 36,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Tcpip\\Parameters TcpTimedWaitDelay = 30",
+          "group": "036"
+        },
+        {
+          "id": 37,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Tcpip\\Parameters SackOpts = 1 легаси XP, стек Win10/11 игнорирует; сохранён из списка",
+          "group": "037"
+        },
+        {
+          "id": 38,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "AFD\\Parameters NonblockingSendSpecialCase = 1 легаси XP, то же",
+          "group": "038"
+        }
+      ]
+    },
+    {
+      "id": "B04",
+      "key": "POWER",
+      "title": "Схема High Perf, USB suspend",
+      "category": "safe",
+      "context": "Режимы: LIT MIN MED WRK MAX     Откат: P\n      Guard: нет; WARN на ноутбуке, DC везде KEEP",
+      "explanation": "Меняет поведение схемы питания. Проверь частоты и температуру под нагрузкой, а на ноутбуке отдельно оцени автономность.",
+      "operations": [
+        {
+          "id": 39,
+          "kind": "SCHEME",
+          "help": "Переключает активную схему питания.",
+          "description": "SCHEME_MIN (High Performance)",
+          "group": "039"
+        },
+        {
+          "id": 40,
+          "kind": "PWR",
+          "help": "Меняет параметр схемы питания. Проверь поведение от сети и от батареи.",
+          "description": "SUB_PROCESSOR CPMINCORES AC = 100",
+          "group": "040"
+        },
+        {
+          "id": 41,
+          "kind": "PWR",
+          "help": "Меняет параметр схемы питания. Проверь поведение от сети и от батареи.",
+          "description": "SUB_PROCESSOR CPMAXCORES AC = 100",
+          "group": "041"
+        },
+        {
+          "id": 42,
+          "kind": "PWR",
+          "help": "Меняет параметр схемы питания. Проверь поведение от сети и от батареи.",
+          "description": "SUB_USB 48e6b7a6-50f5-4782-a5d4-53bb8f07e226 AC = 0",
+          "group": "042"
+        },
+        {
+          "id": 43,
+          "kind": "PWR",
+          "help": "Меняет параметр схемы питания. Проверь поведение от сети и от батареи.",
+          "description": "SUB_PROCESSOR PERFBOOSTMODE AC = 2",
+          "group": "043"
+        }
+      ]
+    },
+    {
+      "id": "B05",
+      "key": "POWER_THROTTLE",
+      "title": "Power Throttling: ревизия",
+      "category": "safe",
+      "context": "Режимы: MIN MED WRK MAX         Откат: P\n      Guard: нет",
+      "explanation": "Возвращает Windows возможность экономить CPU на фоновых задачах. Фоновые вычисления могут завершаться дольше.",
+      "operations": [
+        {
+          "id": 44,
+          "kind": "KEY",
+          "help": "Готовит раздел для следующего параметра. Само создание раздела не ускоряет систему.",
+          "description": "Control\\Power\\PowerThrottling",
+          "group": "044"
+        },
+        {
+          "id": 45,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Control\\Power\\PowerThrottling PowerThrottlingOff = 0",
+          "group": "045"
+        }
+      ]
+    },
+    {
+      "id": "B06",
+      "key": "UWP",
+      "title": "Удаление контентных UWP",
+      "category": "safe",
+      "context": "Режимы: LIT(sel) MIN(full) MED(full) WRK(sel) MAX(full)\n      Откат: НЕОБРАТИМО, список в appx_removed.txt\n      Guard: для full - CONFIRM, при отказе переход на selective\n      selective = ID 046-051 (6 операций)\n      full      = ID 046-058 (13 операций)\n      Удаление только для целевого SID, provisioned не трогаем.",
+      "explanation": "Удаляет выбранные встроенные приложения текущего пользователя. Полный вариант затрагивает поиск и Widgets; для возврата пакетов может понадобиться переустановка.",
+      "operations": [
+        {
+          "id": 46,
+          "kind": "APPX",
+          "help": "Удаляет приложение у пользователя. Возврат может потребовать переустановки.",
+          "description": "*CandyCrush*",
+          "group": "046"
+        },
+        {
+          "id": 47,
+          "kind": "APPX",
+          "help": "Удаляет приложение у пользователя. Возврат может потребовать переустановки.",
+          "description": "*TikTok*",
+          "group": "047"
+        },
+        {
+          "id": 48,
+          "kind": "APPX",
+          "help": "Удаляет приложение у пользователя. Возврат может потребовать переустановки.",
+          "description": "*Facebook*",
+          "group": "048"
+        },
+        {
+          "id": 49,
+          "kind": "APPX",
+          "help": "Удаляет приложение у пользователя. Возврат может потребовать переустановки.",
+          "description": "*Twitter*",
+          "group": "049"
+        },
+        {
+          "id": 50,
+          "kind": "APPX",
+          "help": "Удаляет приложение у пользователя. Возврат может потребовать переустановки.",
+          "description": "*Disney*",
+          "group": "050"
+        },
+        {
+          "id": 51,
+          "kind": "APPX",
+          "help": "Удаляет приложение у пользователя. Возврат может потребовать переустановки.",
+          "description": "*BubbleWitch*",
+          "group": "051"
+        },
+        {
+          "id": 52,
+          "kind": "APPX",
+          "help": "Удаляет приложение у пользователя. Возврат может потребовать переустановки.",
+          "description": "*Spotify* только full",
+          "group": "052"
+        },
+        {
+          "id": 53,
+          "kind": "APPX",
+          "help": "Удаляет приложение у пользователя. Возврат может потребовать переустановки.",
+          "description": "*BingWeather* только full",
+          "group": "053"
+        },
+        {
+          "id": 54,
+          "kind": "APPX",
+          "help": "Удаляет приложение у пользователя. Возврат может потребовать переустановки.",
+          "description": "*BingNews* только full",
+          "group": "054"
+        },
+        {
+          "id": 55,
+          "kind": "APPX",
+          "help": "Удаляет приложение у пользователя. Возврат может потребовать переустановки.",
+          "description": "*BingSports* только full",
+          "group": "055"
+        },
+        {
+          "id": 56,
+          "kind": "APPX",
+          "help": "Удаляет приложение у пользователя. Возврат может потребовать переустановки.",
+          "description": "*BingFinance* только full",
+          "group": "056"
+        },
+        {
+          "id": 57,
+          "kind": "APPX",
+          "help": "Удаляет приложение у пользователя. Возврат может потребовать переустановки.",
+          "description": "*Microsoft.BingSearch* только full",
+          "group": "057"
+        },
+        {
+          "id": 58,
+          "kind": "APPX",
+          "help": "Удаляет приложение у пользователя. Возврат может потребовать переустановки.",
+          "description": "*Windows.Client.WebExperience* только full, Widgets",
+          "group": "058"
+        }
+      ]
+    },
+    {
+      "id": "B07",
+      "key": "SCHTASKS",
+      "title": "Задачи телеметрии и CEIP",
+      "category": "safe",
+      "context": "Режимы: LIT MIN MED WRK MAX     Откат: W\n      Guard: нет; отсутствующая задача даёт SKIP",
+      "explanation": "Отключает перечисленные задания планировщика. Уже отключённые задания пропускаются; проверь историю сессии перед откатом.",
+      "operations": [
+        {
+          "id": 59,
+          "kind": "TASK",
+          "help": "Меняет состояние задания. При отключении оно перестаёт запускаться по расписанию.",
+          "description": "CEIP\\Consolidator",
+          "group": "059"
+        },
+        {
+          "id": 60,
+          "kind": "TASK",
+          "help": "Меняет состояние задания. При отключении оно перестаёт запускаться по расписанию.",
+          "description": "CEIP\\UsbCeip",
+          "group": "060"
+        },
+        {
+          "id": 61,
+          "kind": "TASK",
+          "help": "Меняет состояние задания. При отключении оно перестаёт запускаться по расписанию.",
+          "description": "Application Experience\\ProgramDataUpdater",
+          "group": "061"
+        },
+        {
+          "id": 62,
+          "kind": "TASK",
+          "help": "Меняет состояние задания. При отключении оно перестаёт запускаться по расписанию.",
+          "description": "Feedback\\Siuf\\DmClient",
+          "group": "062"
+        },
+        {
+          "id": 63,
+          "kind": "TASK",
+          "help": "Меняет состояние задания. При отключении оно перестаёт запускаться по расписанию.",
+          "description": "Windows Error Reporting\\QueueReporting",
+          "group": "063"
+        },
+        {
+          "id": 64,
+          "kind": "TASK",
+          "help": "Меняет состояние задания. При отключении оно перестаёт запускаться по расписанию.",
+          "description": "MemoryDiagnostic\\RunFullMemoryDiagnostic",
+          "group": "064"
+        },
+        {
+          "id": 65,
+          "kind": "TASK",
+          "help": "Меняет состояние задания. При отключении оно перестаёт запускаться по расписанию.",
+          "description": "Maintenance\\WinSAT",
+          "group": "065"
+        }
+      ]
+    },
+    {
+      "id": "B08",
+      "key": "DEFENDER_EXC",
+      "title": "Исключения Defender для игр",
+      "category": "safe",
+      "context": "Режимы: MIN MED MAX             Откат: S\n      Guard: G_TAMPER (INFO), блок не начинается при включённом Tamper",
+      "explanation": "Добавляет исключения проверки файлов. Это снижает защиту для указанных путей и расширений; на рабочем ПК сначала проверь требования администратора.",
+      "operations": [
+        {
+          "id": 66,
+          "kind": "DEF",
+          "help": "Затрагивает защиту файлов или процессов антивирусом.",
+          "description": "path add C:\\Program Files (x86)\\Steam",
+          "group": "066"
+        },
+        {
+          "id": 67,
+          "kind": "DEF",
+          "help": "Затрагивает защиту файлов или процессов антивирусом.",
+          "description": "path add C:\\Program Files\\Steam",
+          "group": "067"
+        },
+        {
+          "id": 68,
+          "kind": "DEF",
+          "help": "Затрагивает защиту файлов или процессов антивирусом.",
+          "description": "path add C:\\Program Files\\Epic Games",
+          "group": "068"
+        },
+        {
+          "id": 69,
+          "kind": "DEF",
+          "help": "Затрагивает защиту файлов или процессов антивирусом.",
+          "description": "path add C:\\Games",
+          "group": "069"
+        },
+        {
+          "id": 70,
+          "kind": "DEF",
+          "help": "Затрагивает защиту файлов или процессов антивирусом.",
+          "description": "path add D:\\Games",
+          "group": "070"
+        },
+        {
+          "id": 71,
+          "kind": "DEF",
+          "help": "Затрагивает защиту файлов или процессов антивирусом.",
+          "description": "proc add cs2.exe",
+          "group": "071"
+        },
+        {
+          "id": 72,
+          "kind": "DEF",
+          "help": "Затрагивает защиту файлов или процессов антивирусом.",
+          "description": "proc add csgo.exe",
+          "group": "072"
+        },
+        {
+          "id": 73,
+          "kind": "DEF",
+          "help": "Затрагивает защиту файлов или процессов антивирусом.",
+          "description": "proc add steam.exe",
+          "group": "073"
+        },
+        {
+          "id": 74,
+          "kind": "DEF",
+          "help": "Затрагивает защиту файлов или процессов антивирусом.",
+          "description": "proc add steamwebhelper.exe",
+          "group": "074"
+        },
+        {
+          "id": 75,
+          "kind": "DEF",
+          "help": "Затрагивает защиту файлов или процессов антивирусом.",
+          "description": "proc add Discord.exe",
+          "group": "075"
+        }
+      ]
+    },
+    {
+      "id": "B09",
+      "key": "SERVICES",
+      "title": "DiagTrack, dmwappush, Fax",
+      "category": "safe",
+      "context": "Режимы: MIN MED WRK MAX         Откат: U\n      Guard: нет; отсутствующая служба даёт SKIP",
+      "explanation": "Меняет запуск системных служб. Выбор зависит от устройств и функций, которыми ты пользуешься.",
+      "operations": [
+        {
+          "id": 76,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "Fax = disabled",
+          "group": "076"
+        },
+        {
+          "id": 77,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "RemoteRegistry = disabled",
+          "group": "077"
+        },
+        {
+          "id": 78,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "RetailDemo = disabled",
+          "group": "078"
+        }
+      ]
+    },
+    {
+      "id": "B10",
+      "key": "SPOOLER",
+      "title": "Печать: Spooler",
+      "category": "safe",
+      "context": "Режимы: MIN MED WRK MAX         Откат: U\n      Guard: CONFIRM по умолчанию Нет; отказ = блок не начинается",
+      "explanation": "Меняет службу печати. Проверь печать в PDF и сетевые принтеры, даже если физический принтер сейчас отключён.",
+      "operations": [
+        {
+          "id": 79,
+          "kind": "STOP",
+          "help": "Останавливает службу в текущей сессии.",
+          "description": "Spooler",
+          "group": "079"
+        },
+        {
+          "id": 80,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "Spooler = disabled",
+          "group": "080"
+        }
+      ]
+    },
+    {
+      "id": "B11",
+      "key": "DEFRAG",
+      "title": "Дефрагментация: defragsvc",
+      "category": "safe",
+      "context": "Режимы: MAX                     Откат: U\n      Guard: G_ALLSSD (HARD) + G_CONFIRM про плановый Retrim",
+      "explanation": "Меняет обслуживание накопителей. Учитывай тип каждого диска; смешанная система требует отдельной проверки.",
+      "operations": [
+        {
+          "id": 81,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "defragsvc = disabled отключает и плановый TRIM; вручную потом defrag /L",
+          "group": "081"
+        }
+      ]
+    },
+    {
+      "id": "B12",
+      "key": "VISUAL",
+      "title": "Визуал по профилю",
+      "category": "safe",
+      "context": "Режимы: MED WRK MAX             Откат: V\n      Guard: профиль Keep = блок не начинается, 0 операций\n      Профиль-зависимые пункты дают SKIP, итог всегда 10.\n      Performance: применяются 084 086 087 088 089 090 091  (7)\n      Balanced:    применяются 082 084 088 089 090 091      (6)\n      MotionOnly:  применяется только 084; VISUAL_AGG пропускается.\n      Comfort:     применяются 083 089 090 091              (4)\n      Work:        применяются 082 085 089 090 091          (5)",
+      "explanation": "Управляет анимациями окон, задержкой меню и плотностью Проводника. Выбери профиль в разделе оформления: MotionOnly меняет только сворачивание окон.",
+      "operations": [
+        {
+          "id": 82,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Control Panel\\Desktop MenuShowDelay = 100",
+          "group": "082"
+        },
+        {
+          "id": 83,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Control Panel\\Desktop MenuShowDelay = 200",
+          "group": "083"
+        },
+        {
+          "id": 84,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Desktop\\WindowMetrics MinAnimate = 0",
+          "group": "084"
+        },
+        {
+          "id": 85,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Themes\\Personalize EnableTransparency = 1",
+          "group": "085"
+        },
+        {
+          "id": 86,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Explorer\\VisualEffects VisualFXSetting = 2",
+          "group": "086"
+        },
+        {
+          "id": 87,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Control Panel\\Desktop UserPreferencesMask = 9012038010000000",
+          "group": "087"
+        },
+        {
+          "id": 88,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Explorer\\Advanced UseCompactMode = 1",
+          "group": "088"
+        },
+        {
+          "id": 89,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Explorer\\Advanced ShowSyncProviderNotifications = 0",
+          "group": "089"
+        },
+        {
+          "id": 90,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Policies\\Windows\\System DisableAcrylicBackgroundOnLogon = 1",
+          "group": "090"
+        },
+        {
+          "id": 91,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU ContentDeliveryManager RotatingLockScreenEnabled = 0",
+          "group": "091"
+        }
+      ]
+    },
+    {
+      "id": "B13",
+      "key": "GAMING",
+      "title": "Game Mode, GameDVR, FSE",
+      "category": "safe",
+      "context": "Режимы: MED MAX                 Откат: G\n      Guard: нет",
+      "explanation": "Меняет игровые функции Windows. Сравни одну и ту же игру и сцену, проверь запись видео и оверлей, если пользуешься ими.",
+      "operations": [
+        {
+          "id": 92,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU GameBar AllowAutoGameMode = 1",
+          "group": "092"
+        },
+        {
+          "id": 93,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU GameBar AutoGameModeEnabled = 1",
+          "group": "093"
+        },
+        {
+          "id": 94,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU GameBar UseNexusForGameBarEnabled = 0",
+          "group": "094"
+        },
+        {
+          "id": 95,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU GameDVR AppCaptureEnabled = 0",
+          "group": "095"
+        },
+        {
+          "id": 96,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU GameConfigStore GameDVR_Enabled = 0",
+          "group": "096"
+        },
+        {
+          "id": 97,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Policies\\Windows\\GameDVR AllowGameDVR = 0",
+          "group": "097"
+        },
+        {
+          "id": 98,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU GameConfigStore GameDVR_FSEBehaviorMode = 2",
+          "group": "098"
+        },
+        {
+          "id": 99,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU GameConfigStore GameDVR_HonorUserFSEBehaviorMode = 1",
+          "group": "099"
+        },
+        {
+          "id": 100,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU GameConfigStore GameDVR_FSEBehavior = 2",
+          "group": "100"
+        },
+        {
+          "id": 101,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU GameConfigStore GameDVR_DXGIHonorFSEWindowsCompatible = 1",
+          "group": "101"
+        }
+      ]
+    },
+    {
+      "id": "B14",
+      "key": "UX",
+      "title": "Проводник, реклама в меню Пуск",
+      "category": "safe",
+      "context": "Режимы: MIN MED WRK MAX         Откат: W\n      Guard: 107 только Win11, иначе SKIP",
+      "explanation": "Меняет поведение Проводника и предложения Windows. Результат виден в интерфейсе и может потребовать повторного входа.",
+      "operations": [
+        {
+          "id": 102,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Policies\\Windows\\Explorer DisableSearchBoxSuggestions = 1",
+          "group": "102"
+        },
+        {
+          "id": 103,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Policies\\Windows\\Windows Search DisableWebSearch = 1",
+          "group": "103"
+        },
+        {
+          "id": 104,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Policies\\Windows\\Windows Search ConnectedSearchUseWeb = 0",
+          "group": "104"
+        },
+        {
+          "id": 105,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Policies\\Windows\\WindowsCopilot TurnOffWindowsCopilot = 1",
+          "group": "105"
+        },
+        {
+          "id": 106,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKLM Policies\\Windows\\WindowsCopilot TurnOffWindowsCopilot = 1",
+          "group": "106"
+        },
+        {
+          "id": 107,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Explorer\\Advanced TaskbarDa = 0",
+          "group": "107"
+        }
+      ]
+    },
+    {
+      "id": "B15",
+      "key": "WORK",
+      "title": "Рабочий профиль: таймауты, HAGS",
+      "category": "safe",
+      "context": "Режимы: WRK MAX                 Откат: G + V + U + N\n      Guard: нет; WARN если вендор GPU не определён",
+      "explanation": "Подбирает параметры для рабочих приложений. Проверь привычный поиск, графическое ускорение и открытие рабочих документов.",
+      "operations": [
+        {
+          "id": 108,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "GraphicsDrivers HwSchMode = 2 (HAGS)",
+          "group": "108"
+        },
+        {
+          "id": 109,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Control Panel\\Desktop WaitToKillAppTimeout = 2000",
+          "group": "109"
+        },
+        {
+          "id": 110,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Control WaitToKillServiceTimeout = 2000",
+          "group": "110"
+        },
+        {
+          "id": 111,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "WSearch = delayed",
+          "group": "111"
+        },
+        {
+          "id": 112,
+          "kind": "SUPP",
+          "help": "Меняет параметр дополнительного сетевого шаблона.",
+          "description": "template Internet congestionprovider = ctcp",
+          "group": "112"
+        }
+      ]
+    },
+    {
+      "id": "B16",
+      "key": "MAINT",
+      "title": "TRIM, 8dot3, TEMP, кэши",
+      "category": "safe",
+      "context": "Режимы: MED WRK MAX + [C] Обслуживание    Откат: M + НЕОБРАТИМО\n      Guard: G_GLOBAL и точка восстановления при вызове из меню [C]\n      Пути берутся из профиля РЕАЛЬНОГО пользователя, не админа.\n      Остановка FontCache идёт с NOCOUNT и операцией не считается.",
+      "explanation": "Обслуживает систему и очищает отдельные файлы. Освобождённое место видно сразу; удалённые данные не возвращаются из журнала.",
+      "operations": [
+        {
+          "id": 113,
+          "kind": "PURGE",
+          "help": "Удаляет файлы. Журнал не сохраняет их содержимое.",
+          "description": "%USERPROFILE%\\AppData\\Local\\Temp\\* рекурсивно",
+          "group": "113"
+        },
+        {
+          "id": 114,
+          "kind": "PURGE",
+          "help": "Удаляет файлы. Журнал не сохраняет их содержимое.",
+          "description": "%WINDIR%\\Temp\\* рекурсивно",
+          "group": "114"
+        },
+        {
+          "id": 115,
+          "kind": "PURGE",
+          "help": "Удаляет файлы. Журнал не сохраняет их содержимое.",
+          "description": "FontCache\\*.dat после stop FontCache",
+          "group": "115"
+        },
+        {
+          "id": 116,
+          "kind": "PURGE",
+          "help": "Удаляет файлы. Журнал не сохраняет их содержимое.",
+          "description": "Explorer\\thumbcache_*.db",
+          "group": "116"
+        },
+        {
+          "id": 117,
+          "kind": "PROC",
+          "help": "Выполняется в текущей сессии. Воздействие может быть заметно сразу.",
+          "description": "wsreset.exe под CONFIRM",
+          "group": "117"
+        },
+        {
+          "id": 118,
+          "kind": "FSU",
+          "help": "Меняет поведение файловой системы. Поддержка зависит от тома и версии Windows.",
+          "description": "disable8dot3 = 1",
+          "group": "118"
+        },
+        {
+          "id": 119,
+          "kind": "FSU",
+          "help": "Меняет поведение файловой системы. Поддержка зависит от тома и версии Windows.",
+          "description": "disablelastaccess = 1",
+          "group": "119"
+        },
+        {
+          "id": 120,
+          "kind": "FSU",
+          "help": "Меняет поведение файловой системы. Поддержка зависит от тома и версии Windows.",
+          "description": "memoryusage = 2",
+          "group": "120"
+        },
+        {
+          "id": 121,
+          "kind": "FSU",
+          "help": "Меняет поведение файловой системы. Поддержка зависит от тома и версии Windows.",
+          "description": "disabledeletenotify = 0 TRIM включён",
+          "group": "121"
+        }
+      ]
+    },
+    {
+      "id": "B17",
+      "key": "INPUT",
+      "title": "Повтор клавиш, залипание",
+      "category": "safe",
+      "context": "Режимы: LIT MIN MED WRK MAX     Откат: W\n      Guard: нет",
+      "explanation": "Меняет повтор и задержку ввода и связанные параметры клавиатуры. Проверь удержание клавиши и функции специальных возможностей.",
+      "operations": [
+        {
+          "id": 122,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Control Panel\\Keyboard KeyboardDelay = 0",
+          "group": "122"
+        },
+        {
+          "id": 123,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Control Panel\\Keyboard KeyboardSpeed = 31",
+          "group": "123"
+        },
+        {
+          "id": 124,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Accessibility\\StickyKeys Flags = 506",
+          "group": "124"
+        },
+        {
+          "id": 125,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Accessibility\\ToggleKeys Flags = 58",
+          "group": "125"
+        },
+        {
+          "id": 126,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Accessibility\\Keyboard Response Flags = 126",
+          "group": "126"
+        }
+      ]
+    },
+    {
+      "id": "B18",
+      "key": "PRIVACY_EXT",
+      "title": "Фон приложений, локация, журнал",
+      "category": "safe",
+      "context": "Режимы: MIN MED WRK MAX         Откат: W\n      Guard: 131 под CONFIRM по умолчанию Нет",
+      "explanation": "Ограничивает геолокацию и предложения Windows. Глобальный запрет фона может задержать сообщения; отдельные приложения можно настроить через раздел Фон приложений.",
+      "operations": [
+        {
+          "id": 127,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "CapabilityAccessManager\\ConsentStore\\location Value = Deny",
+          "group": "127"
+        },
+        {
+          "id": 128,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Policies\\Windows\\LocationAndSensors DisableLocation = 1",
+          "group": "128"
+        },
+        {
+          "id": 129,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Policies\\Windows\\LocationAndSensors DisableSensors = 1",
+          "group": "129"
+        },
+        {
+          "id": 130,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Policies\\Windows\\CloudContent DisableWindowsConsumerFeatures = 1",
+          "group": "130"
+        },
+        {
+          "id": 131,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU BackgroundAccessApplications GlobalUserDisabled = 1",
+          "group": "131"
+        }
+      ]
+    },
+    {
+      "id": "B19",
+      "key": "WEBDAV",
+      "title": "WebDAV-редиректор WebClient",
+      "category": "safe",
+      "context": "Режимы: MIN MED WRK MAX         Откат: N + U\n      Guard: наличие службы WebClient, иначе блок не начинается",
+      "explanation": "Меняет лимит файлов для WebDAV. Полезно при работе с сетевыми библиотеками через службу WebClient.",
+      "operations": [
+        {
+          "id": 132,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "WebClient\\Parameters FileSizeLimitInBytes = 4294967295",
+          "group": "132"
+        }
+      ]
+    },
+    {
+      "id": "B20",
+      "key": "PRIORITY",
+      "title": "Кванты и SystemResponsiveness",
+      "category": "warn",
+      "context": "Режимы: MED(2/20) WRK(2/20) MAX(выбор/0)    Откат: G\n      Guard: WARN при 38 и cores<6; WARN при 40 (снимает буст переднего плана)\n      Выбор Win32PrioritySeparation: 2 / 26 / 38 / 40, дефолт 2.\n      ID 135-136 зарезервированы после ревизии 7.1a, нумерация далее не сдвинута.",
+      "explanation": "Настраивает приоритет переднего плана и резерв для мультимедиа. Оцени результат одновременно для активного окна и фонового звука.",
+      "operations": [
+        {
+          "id": 133,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Control\\PriorityControl Win32PrioritySeparation = выбор",
+          "group": "133"
+        },
+        {
+          "id": 134,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Multimedia\\SystemProfile SystemResponsiveness = выбор",
+          "group": "134"
+        }
+      ]
+    },
+    {
+      "id": "B21",
+      "key": "MEMORY",
+      "title": "Ядро в RAM, сжатие, пулы служб",
+      "category": "warn",
+      "context": "Режимы: MAX                     Откат: M\n      Guard: G_RAM 8 (HARD) на блок; 138 требует 16 ГБ, 141 требует 32 ГБ",
+      "explanation": "Меняет управление памятью Windows. На машинах с разным объёмом RAM и дисками последствия различаются; проверь обычную нагрузку.",
+      "operations": [
+        {
+          "id": 137,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Memory Management DisablePagingExecutive = 1",
+          "group": "137"
+        },
+        {
+          "id": 138,
+          "kind": "MM",
+          "help": "Меняет механизм управления памятью. Проверь обычную нагрузку и запуск приложений.",
+          "description": "PageCombining = off",
+          "group": "138"
+        },
+        {
+          "id": 139,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Control SvcHostSplitThresholdInKB = RAM_GB * 1048576 потолок 1024 ГБ: set /a 32-битный",
+          "group": "139"
+        },
+        {
+          "id": 140,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Memory Management LargeSystemCache = 0",
+          "group": "140"
+        },
+        {
+          "id": 141,
+          "kind": "MM",
+          "help": "Меняет механизм управления памятью. Проверь обычную нагрузку и запуск приложений.",
+          "description": "MemoryCompression = off",
+          "group": "141"
+        }
+      ]
+    },
+    {
+      "id": "B22",
+      "key": "MMCSS",
+      "title": "MMCSS: профиль Games",
+      "category": "warn",
+      "context": "Режимы: MED MAX                 Откат: G\n      Guard: нет; создание ключа Tasks\\Games идёт без счётчика",
+      "explanation": "Меняет параметры мультимедийного планировщика для игровой категории. Результат зависит от того, использует ли приложение эту категорию.",
+      "operations": [
+        {
+          "id": 142,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Multimedia\\SystemProfile\\Tasks\\Games GPU Priority = 8",
+          "group": "142"
+        },
+        {
+          "id": 143,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Multimedia\\SystemProfile\\Tasks\\Games Priority = 6",
+          "group": "143"
+        },
+        {
+          "id": 144,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Multimedia\\SystemProfile\\Tasks\\Games Scheduling Category = High",
+          "group": "144"
+        },
+        {
+          "id": 145,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Multimedia\\SystemProfile\\Tasks\\Games SFIO Priority = High",
+          "group": "145"
+        }
+      ]
+    },
+    {
+      "id": "B23",
+      "key": "POWER_HIBER",
+      "title": "Гибернация и Fast Startup",
+      "category": "warn",
+      "context": "Режимы: MAX                     Откат: P\n      Guard: CONFIRM по умолчанию Нет; WARN при наличии HDD",
+      "explanation": "Отключение гибернации освобождает место, но затрагивает быстрый запуск Windows и возможность сохранить сессию на диск.",
+      "operations": [
+        {
+          "id": 146,
+          "kind": "HIB",
+          "help": "Затрагивает гибернацию и связанный с ней быстрый запуск Windows.",
+          "description": "powercfg -h off убирает и hiberfil.sys, и Windows Fast Startup",
+          "group": "146"
+        }
+      ]
+    },
+    {
+      "id": "B24",
+      "key": "POWER_DISK",
+      "title": "Отключение диска по простою",
+      "category": "warn",
+      "context": "Режимы: MAX                     Откат: P\n      Guard: WARN при наличии HDD",
+      "explanation": "Меняет тайм-аут питания диска. Возможен компромисс между задержкой первого обращения, расходом энергии и шумом.",
+      "operations": [
+        {
+          "id": 147,
+          "kind": "PWR",
+          "help": "Меняет параметр схемы питания. Проверь поведение от сети и от батареи.",
+          "description": "SUB_DISK DISKIDLE AC = 0",
+          "group": "147"
+        }
+      ]
+    },
+    {
+      "id": "B25",
+      "key": "POWER_TIMER",
+      "title": "Таймер простоя платформы",
+      "category": "warn",
+      "context": "Режимы: MAX                     Откат: P\n      Guard: ноутбук -> SKIP; POWER_HAS проверяет наличие GUID",
+      "explanation": "Меняет параметр схемы питания, связанный с объединением таймеров. Это отдельный механизм энергосбережения. Проверь доступность параметра и расход батареи.",
+      "operations": [
+        {
+          "id": 148,
+          "kind": "PWR",
+          "help": "Меняет параметр схемы питания. Проверь поведение от сети и от батареи.",
+          "description": "SUB_NONE 5d6ed4dc-5c00-4d6f-bc53-3f040f13b5dc AC = 0",
+          "group": "148"
+        }
+      ]
+    },
+    {
+      "id": "B26",
+      "key": "RESERVED",
+      "title": "Reserved Storage",
+      "category": "warn",
+      "context": "Режимы: MAX                     Откат: M\n      Guard: CONFIRM по умолчанию Нет",
+      "explanation": "Меняет резерв пространства Windows для обслуживания. Освобождение места может усложнить установку обновлений при заполненном диске.",
+      "operations": [
+        {
+          "id": 149,
+          "kind": "DISM",
+          "help": "Выполняет обслуживание компонентов Windows. Дождись завершения.",
+          "description": "Set-ReservedStorageState Disabled прежнее состояние UNKNOWN -> откат пропустит честно",
+          "group": "149"
+        }
+      ]
+    },
+    {
+      "id": "B27",
+      "key": "WORK_IFEO",
+      "title": "Приоритет рабочих приложений",
+      "category": "warn",
+      "context": "Режимы: WRK MAX                 Откат: W\n      Guard: WARN про Process Lasso",
+      "explanation": "Назначает параметры для конкретных исполняемых файлов рабочих приложений. Эффект относится только к совпадающему имени процесса.",
+      "operations": [
+        {
+          "id": 150,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Image File Execution Options\\<app>\\PerfOptions CpuPriorityClass = 3 для 8 приложений: chrome.exe msedge.exe firefox.exe WINWORD.EXE EXCEL.EXE Code.exe Photoshop.exe Discord.exe одна операция, в журнал попадает каждая запись",
+          "group": "150"
+        }
+      ]
+    },
+    {
+      "id": "B28",
+      "key": "UX_CHAT",
+      "title": "Чат на панели задач Win11",
+      "category": "warn",
+      "context": "Режимы: MAX                     Откат: W\n      Guard: только Win11, иначе SKIP",
+      "explanation": "Скрывает интеграцию чата в интерфейсе Windows. Доступность зависит от версии оболочки.",
+      "operations": [
+        {
+          "id": 151,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Explorer\\Advanced TaskbarMn = 0",
+          "group": "151"
+        }
+      ]
+    },
+    {
+      "id": "B29",
+      "key": "MOUSE",
+      "title": "Мышь 1:1, кривые ускорения",
+      "category": "warn",
+      "context": "Режимы: MAX                     Откат: G\n      Guard: нет",
+      "explanation": "Меняет обработку движения мыши. Проверь знакомую чувствительность в игре и на рабочем столе.",
+      "operations": [
+        {
+          "id": 152,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Control Panel\\Mouse MouseSpeed = 0",
+          "group": "152"
+        },
+        {
+          "id": 153,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Control Panel\\Mouse MouseThreshold1 = 0",
+          "group": "153"
+        },
+        {
+          "id": 154,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Control Panel\\Mouse MouseThreshold2 = 0",
+          "group": "154"
+        },
+        {
+          "id": 155,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Control Panel\\Mouse SmoothMouseXCurve = 40 нулевых байт",
+          "group": "155"
+        },
+        {
+          "id": 156,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Control Panel\\Mouse SmoothMouseYCurve = 40 нулевых байт длина генерируется циклом; в 6.x было 32 байта и твик не работал",
+          "group": "156"
+        }
+      ]
+    },
+    {
+      "id": "B30",
+      "key": "TIMERS",
+      "title": "GlobalTimerResolutionRequests",
+      "category": "warn",
+      "context": "Режимы: MAX                     Откат: M\n      Guard: WARN про конфликт с ISLC",
+      "explanation": "Меняет обработку запросов разрешения таймера. Учитывай приложения, которые уже запрашивают иной период. Измерь время кадра и потребление в простое.",
+      "operations": [
+        {
+          "id": 157,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Session Manager\\kernel GlobalTimerResolutionRequests = 1",
+          "group": "157"
+        }
+      ]
+    },
+    {
+      "id": "B31",
+      "key": "NDU",
+      "title": "Ndu: утечка nonpaged pool",
+      "category": "warn",
+      "context": "Режимы: MAX                     Откат: N + U\n      Guard: нет",
+      "explanation": "Отключает сетевой монитор NDU. Может измениться доступность статистики расхода трафика.",
+      "operations": [
+        {
+          "id": 158,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "Ndu = disabled",
+          "group": "158"
+        }
+      ]
+    },
+    {
+      "id": "B32",
+      "key": "GAMEBAR_RT",
+      "title": "GameBar PresenceWriter",
+      "category": "warn",
+      "context": "Режимы: MAX                     Откат: G\n      Guard: WARN; ветка под TrustedInstaller, идёт через ACL",
+      "explanation": "Меняет компоненты игрового оверлея и записи. Проверь захват клипов и сочетания клавиш Xbox Game Bar.",
+      "operations": [
+        {
+          "id": 159,
+          "kind": "ACL",
+          "help": "Записывает значение в защищённую ветку. Для возврата потребуется доступ к этому устройству.",
+          "description": "WindowsRuntime\\ActivatableClassId\\...PresenceWriter ActivationType = 0",
+          "group": "159"
+        }
+      ]
+    },
+    {
+      "id": "B33",
+      "key": "SERVICES_XBOX",
+      "title": "Службы Xbox и ALG",
+      "category": "warn",
+      "context": "Режимы: MAX                     Откат: U\n      Guard: CONFIRM по умолчанию Нет; отказ = блок не начинается",
+      "explanation": "Меняет службы Xbox. Возможны последствия для входа, контроллеров и игр из Microsoft Store.",
+      "operations": [
+        {
+          "id": 160,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "XblAuthManager = disabled",
+          "group": "160"
+        },
+        {
+          "id": 161,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "XblGameSave = disabled",
+          "group": "161"
+        },
+        {
+          "id": 162,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "XboxNetApiSvc = disabled",
+          "group": "162"
+        },
+        {
+          "id": 163,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "ALG = disabled Game Pass и игры из Store перестанут авторизоваться",
+          "group": "163"
+        }
+      ]
+    },
+    {
+      "id": "B34",
+      "key": "AUDIO",
+      "title": "Аудио: только инструкция",
+      "category": "warn",
+      "context": "Режимы: MAX                     Откат: нечего откатывать\n      Guard: нет",
+      "explanation": "Меняет параметры аудиосистемы. Проверь воспроизведение, запись и гарнитуру под обычной нагрузкой.",
+      "operations": [
+        {
+          "id": 164,
+          "kind": "SKIP",
+          "help": "Движок помечает эту позицию пропуском.",
+          "description": "аудио-улучшения ключ HKCU\\Software\\Microsoft\\Multimedia\\Audio из 6.x фиктивный: настройка живёт в per-endpoint FxProperties и зависит от драйвера. Ручная процедура - MANUAL_STEPS раздел 2. Считается операцией, но ничего не пишет.",
+          "group": "164"
+        }
+      ]
+    },
+    {
+      "id": "B35",
+      "key": "WDI",
+      "title": "Autologger WDIContextLog",
+      "category": "warn",
+      "context": "Режимы: LIT MIN MED WRK MAX     Откат: W\n      Guard: нет",
+      "explanation": "Меняет диагностику WDI. После изменения часть диагностических событий может стать недоступной.",
+      "operations": [
+        {
+          "id": 165,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Control\\WMI\\Autologger\\WDIContextLog Start = 0",
+          "group": "165"
+        }
+      ]
+    },
+    {
+      "id": "B36",
+      "key": "STORPORT",
+      "title": "storport IdleTimeout",
+      "category": "warn",
+      "context": "Режимы: MAX                     Откат: M + U\n      Guard: ноутбук -> SKIP",
+      "explanation": "Меняет параметры подсистемы хранения. Драйвер контроллера и тип диска определяют применимость.",
+      "operations": [
+        {
+          "id": 166,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Services\\storport IdleTimeout = 0 значение не документировано Microsoft, WARN в логе",
+          "group": "166"
+        }
+      ]
+    },
+    {
+      "id": "B37",
+      "key": "PREFETCH",
+      "title": "Чистка Prefetch",
+      "category": "warn",
+      "context": "Режимы: MAX                     Откат: НЕОБРАТИМО\n      Guard: CONFIRM по умолчанию Нет",
+      "explanation": "Меняет предварительную загрузку данных. Сравни холодный и повторный запуск одного приложения.",
+      "operations": [
+        {
+          "id": 167,
+          "kind": "PURGE",
+          "help": "Удаляет файлы. Журнал не сохраняет их содержимое.",
+          "description": "%WINDIR%\\Prefetch\\*",
+          "group": "167"
+        }
+      ]
+    },
+    {
+      "id": "B38",
+      "key": "SYSMAIN",
+      "title": "SysMain: стоп и отключение",
+      "category": "warn",
+      "context": "Режимы: MAX                     Откат: U\n      Guard: G_ALLSSD (HARD) + G_CONFIRM",
+      "explanation": "Меняет работу SysMain. Отдельно проверь запуск приложений после перезагрузки и при прогретом кэше.",
+      "operations": [
+        {
+          "id": 168,
+          "kind": "STOP",
+          "help": "Останавливает службу в текущей сессии.",
+          "description": "SysMain",
+          "group": "168"
+        },
+        {
+          "id": 169,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "SysMain = disabled",
+          "group": "169"
+        }
+      ]
+    },
+    {
+      "id": "B39",
+      "key": "VISUAL_AGG",
+      "title": "Прозрачность, меню, рестарт DWM",
+      "category": "warn",
+      "context": "Режимы: MAX                     Откат: V\n      Guard: профиль Keep или MotionOnly = блок не начинается, 0 операций",
+      "explanation": "Дополняет визуальный профиль настройками прозрачности и меню. Блок предусматривает перезапуск DWM; экран может кратковременно погаснуть.",
+      "operations": [
+        {
+          "id": 170,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Themes\\Personalize EnableTransparency = 0 только Performance и Balanced, иначе SKIP",
+          "group": "170"
+        },
+        {
+          "id": 171,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKCU Control Panel\\Desktop MenuShowDelay = 0 только Performance, иначе SKIP",
+          "group": "171"
+        },
+        {
+          "id": 172,
+          "kind": "PROC",
+          "help": "Выполняется в текущей сессии. Воздействие может быть заметно сразу.",
+          "description": "перезапуск DWM транзиентная операция, в журнал не пишется",
+          "group": "172"
+        }
+      ]
+    },
+    {
+      "id": "B40",
+      "key": "NET_GLOBAL",
+      "title": "ECN, RSS, RSC, FastOpen, ARP",
+      "category": "warn",
+      "context": "Режимы: MAX                     Откат: N\n      Guard: G_NETWORK\n      Третьим аргументом идёт документированный дефолт Windows:\n      прежнее состояние netsh не читается locale-независимо.",
+      "explanation": "Меняет глобальные параметры сети для приложений. Проверь скорость, потери и стабильность в привычных условиях.",
+      "operations": [
+        {
+          "id": 173,
+          "kind": "TCP",
+          "help": "Меняет поведение сетевого стека. Проверь обычную сеть и VPN.",
+          "description": "ecncapability = disabled",
+          "group": "173"
+        },
+        {
+          "id": 174,
+          "kind": "TCP",
+          "help": "Меняет поведение сетевого стека. Проверь обычную сеть и VPN.",
+          "description": "timestamps = disabled",
+          "group": "174"
+        },
+        {
+          "id": 175,
+          "kind": "TCP",
+          "help": "Меняет поведение сетевого стека. Проверь обычную сеть и VPN.",
+          "description": "chimney = disabled SOFT: на Win10+ нет -> SKIP",
+          "group": "175"
+        },
+        {
+          "id": 176,
+          "kind": "TCP",
+          "help": "Меняет поведение сетевого стека. Проверь обычную сеть и VPN.",
+          "description": "rss = enabled",
+          "group": "176"
+        },
+        {
+          "id": 177,
+          "kind": "TCP",
+          "help": "Меняет поведение сетевого стека. Проверь обычную сеть и VPN.",
+          "description": "rsc = disabled",
+          "group": "177"
+        },
+        {
+          "id": 178,
+          "kind": "TCP",
+          "help": "Меняет поведение сетевого стека. Проверь обычную сеть и VPN.",
+          "description": "fastopen = enabled",
+          "group": "178"
+        },
+        {
+          "id": 179,
+          "kind": "TCP",
+          "help": "Меняет поведение сетевого стека. Проверь обычную сеть и VPN.",
+          "description": "fastopenfallback = enabled",
+          "group": "179"
+        },
+        {
+          "id": 180,
+          "kind": "FLUSH",
+          "help": "Сбрасывает текущее состояние. При последующих обращениях оно создаётся заново.",
+          "description": "arp",
+          "group": "180"
+        }
+      ]
+    },
+    {
+      "id": "B41",
+      "key": "VBS",
+      "title": "VBS, HVCI, Credential Guard",
+      "category": "danger",
+      "context": "Режимы: MAX                     Откат: S\n      Guard: G_ADVANCED + G_AV (HARD) + G_CONFIRM",
+      "explanation": "Затрагивает изоляцию на основе виртуализации и защиту учётных данных. Возможны нарушения требований безопасности, античитов и корпоративных политик.",
+      "operations": [
+        {
+          "id": 181,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "DeviceGuard\\Scenarios\\HypervisorEnforcedCodeIntegrity Enabled = 0",
+          "group": "181"
+        },
+        {
+          "id": 182,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Control\\Lsa LsaCfgFlags = 0",
+          "group": "182"
+        },
+        {
+          "id": 183,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "DeviceGuard EnableVirtualizationBasedSecurity = 0 FaceIT и ESEA могут перестать запускаться",
+          "group": "183"
+        }
+      ]
+    },
+    {
+      "id": "B42",
+      "key": "MITIGATIONS",
+      "title": "Spectre-митигации",
+      "category": "danger",
+      "context": "Режимы: MAX                     Откат: S + M\n      Guard: G_ADVANCED + G_AV + G_CONFIRM\n      Выделено из DPC-блока 6.x: разные риски, разный откат.",
+      "explanation": "Меняет защиту процессора от известных классов атак. Выигрыш в конкретной игре не подтверждает приемлемость снижения защиты.",
+      "operations": [
+        {
+          "id": 184,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Memory Management FeatureSettingsOverride = 3",
+          "group": "184"
+        },
+        {
+          "id": 185,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Memory Management FeatureSettingsOverrideMask = 3",
+          "group": "185"
+        }
+      ]
+    },
+    {
+      "id": "B43",
+      "key": "BCD_TIMERS",
+      "title": "dynamic tick, platform clock",
+      "category": "danger",
+      "context": "Режимы: MAX                     Откат: B\n      Guard: G_ADVANCED + G_NOTLAPTOP + G_ACPOWER + G_CONFIRM + BCD_SUSPEND",
+      "explanation": "disabledynamictick управляет периодическими тиками в простое. useplatformclock и useplatformtick меняют выбор источника времени и тика. Параметры BCD вступают в силу после перезагрузки. На ПК автора при опытах с HPET и dynamic tick наблюдались потеря буста, снижение отзывчивости и BSOD. Причина отдельно не изолирована.",
+      "operations": [
+        {
+          "id": 186,
+          "kind": "BCD",
+          "help": "Меняет загрузочную конфигурацию. Эффект проверяется после перезагрузки. При шифровании нужен доступ к ключу восстановления.",
+          "description": "disabledynamictick = yes",
+          "group": "186"
+        },
+        {
+          "id": 187,
+          "kind": "BCD",
+          "help": "Меняет загрузочную конфигурацию. Эффект проверяется после перезагрузки. При шифровании нужен доступ к ключу восстановления.",
+          "description": "useplatformclock = no",
+          "group": "187"
+        },
+        {
+          "id": 188,
+          "kind": "BCD",
+          "help": "Меняет загрузочную конфигурацию. Эффект проверяется после перезагрузки. При шифровании нужен доступ к ключу восстановления.",
+          "description": "useplatformtick = no только intel_old и zen_old, иначе SKIP в 6.x DPC ставил yes, а HPET_SMART следом no",
+          "group": "188"
+        }
+      ]
+    },
+    {
+      "id": "B44",
+      "key": "BCD_TSC",
+      "title": "tscsyncpolicy Enhanced",
+      "category": "danger",
+      "context": "Режимы: MAX                     Откат: B\n      Guard: G_ADVANCED + CPU_SERIES>0 + G_NOTLAPTOP + G_CONFIRM + BCD_SUSPEND",
+      "explanation": "Выбирает политику синхронизации TSC между процессорами. Для повседневного использования оставь автоматический выбор. Сравнивай время кадра в одной сцене после перезагрузки.",
+      "operations": [
+        {
+          "id": 189,
+          "kind": "BCD",
+          "help": "Меняет загрузочную конфигурацию. Эффект проверяется после перезагрузки. При шифровании нужен доступ к ключу восстановления.",
+          "description": "tscsyncpolicy = Enhanced",
+          "group": "189"
+        }
+      ]
+    },
+    {
+      "id": "B45",
+      "key": "BCD_BOOT",
+      "title": "tpmbootentropy, bootux",
+      "category": "danger",
+      "context": "Режимы: MAX                     Откат: B\n      Guard: G_ADVANCED + G_CONFIRM + BCD_SUSPEND",
+      "explanation": "Меняет параметры ранней загрузки. Может уменьшить видимость диагностики и снизить защиту процесса загрузки.",
+      "operations": [
+        {
+          "id": 190,
+          "kind": "BCD",
+          "help": "Меняет загрузочную конфигурацию. Эффект проверяется после перезагрузки. При шифровании нужен доступ к ключу восстановления.",
+          "description": "tpmbootentropy = ForceDisable",
+          "group": "190"
+        },
+        {
+          "id": 191,
+          "kind": "BCD",
+          "help": "Меняет загрузочную конфигурацию. Эффект проверяется после перезагрузки. При шифровании нужен доступ к ключу восстановления.",
+          "description": "bootuxdisabled = on",
+          "group": "191"
+        }
+      ]
+    },
+    {
+      "id": "B46",
+      "key": "GPU_ULPS",
+      "title": "ULPS: глубокий сон AMD",
+      "category": "danger",
+      "context": "Режимы: MAX                     Откат: G\n      Guard: G_GPU_VENDOR AMD (INFO) + G_ACPOWER; WARN на ноутбуке",
+      "explanation": "Меняет энергосбережение отдельных адаптеров AMD. Следи за выходом из сна, температурой и потреблением.",
+      "operations": [
+        {
+          "id": 192,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Class\\{4d36e968}\\<все AMD экземпляры> EnableUlps = 0 одна операция, журнал по каждому экземпляру не в слепой 0000, где мог оказаться iGPU",
+          "group": "192"
+        }
+      ]
+    },
+    {
+      "id": "B47",
+      "key": "GPU_HDCP",
+      "title": "HDCP в драйвере NVIDIA",
+      "category": "danger",
+      "context": "Режимы: MAX                     Откат: G\n      Guard: G_GPU_VENDOR NVIDIA (INFO) + G_CONFIRM",
+      "explanation": "Затрагивает HDCP на видеокартах NVIDIA. Может перестать воспроизводиться защищённое видео.",
+      "operations": [
+        {
+          "id": 193,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Class\\{4d36e968}\\<все NVIDIA экземпляры> RMHdcpKeyGlob = 00000000 Netflix, Disney+, Amazon Prime перестанут выводить картинку",
+          "group": "193"
+        }
+      ]
+    },
+    {
+      "id": "B48",
+      "key": "MSI_GPU",
+      "title": "MSI для GPU",
+      "category": "danger",
+      "context": "Режимы: MAX                     Откат: G\n      Guard: G_ADVANCED + G_HWID (HARD) + G_CONFIRM,\n             на ноутбуке второй G_CONFIRM",
+      "explanation": "Меняет режим прерываний конкретного GPU. Ошибка совместимости драйвера может проявиться при следующем запуске.",
+      "operations": [
+        {
+          "id": 194,
+          "kind": "ACL",
+          "help": "Записывает значение в защищённую ветку. Для возврата потребуется доступ к этому устройству.",
+          "description": "Enum\\PCI\\<GPU_HWID>\\...\\MessageSignaledInterruptProperties MSISupported = 1 владелец ветки и ACE возвращаются в finally при любом исходе",
+          "group": "194"
+        }
+      ]
+    },
+    {
+      "id": "B49",
+      "key": "EXP_DWM",
+      "title": "DWM OverlayTestMode",
+      "category": "exp",
+      "context": "Откат: V + G                    Guard: G_ADVANCED + G_CONFIRM",
+      "explanation": "Меняет использование аппаратных наложений DWM. Имеет смысл как диагностика мерцания или артефактов.",
+      "operations": [
+        {
+          "id": 196,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "HKLM\\SOFTWARE\\Microsoft\\Windows\\DWM OverlayTestMode = 5 артефакты на части GPU",
+          "group": "196"
+        }
+      ]
+    },
+    {
+      "id": "B50",
+      "key": "EXP_NX",
+      "title": "DEP: nx OptOut",
+      "category": "exp",
+      "context": "Откат: B + S                    Guard: G_ADVANCED + G_AV + G_CONFIRM + BCD_SUSPEND",
+      "explanation": "Меняет политику защиты памяти DEP. Снижение защиты и несовместимость приложений требуют отдельной оценки.",
+      "operations": [
+        {
+          "id": 197,
+          "kind": "BCD",
+          "help": "Меняет загрузочную конфигурацию. Эффект проверяется после перезагрузки. При шифровании нужен доступ к ключу восстановления.",
+          "description": "nx = OptOut",
+          "group": "197"
+        }
+      ]
+    },
+    {
+      "id": "B51",
+      "key": "EXP_PAGING_ENC",
+      "title": "Шифрование pagefile",
+      "category": "exp",
+      "context": "Откат: M + S                    Guard: G_ADVANCED + G_CONFIRM",
+      "explanation": "Меняет шифрование файла подкачки. Его содержимое может включать конфиденциальные данные.",
+      "operations": [
+        {
+          "id": 198,
+          "kind": "FSU",
+          "help": "Меняет поведение файловой системы. Поддержка зависит от тома и версии Windows.",
+          "description": "encryptpagingfile = 0 pagefile становится читаемым",
+          "group": "198"
+        }
+      ]
+    },
+    {
+      "id": "B52",
+      "key": "EXP_DEF_SCRIPT",
+      "title": "Defender ScriptScanning",
+      "category": "exp",
+      "context": "Откат: S                        Guard: G_ADVANCED + G_TAMPER + G_AV + G_CONFIRM",
+      "explanation": "Меняет проверку сценариев антивирусом. Уменьшается видимость потенциально вредоносных сценариев.",
+      "operations": [
+        {
+          "id": 199,
+          "kind": "DEF",
+          "help": "Затрагивает защиту файлов или процессов антивирусом.",
+          "description": "DisableScriptScanning = true",
+          "group": "199"
+        }
+      ]
+    },
+    {
+      "id": "B53",
+      "key": "EXP_TSC_LEGACY",
+      "title": "tscsyncpolicy Legacy",
+      "category": "exp",
+      "context": "Откат: B                        Guard: G_ADVANCED + G_CPU_OLD 11/4000 (HARD)\n                                             + G_NOTLAPTOP + G_CONFIRM + BCD_SUSPEND",
+      "explanation": "Экспериментальная политика синхронизации TSC для старого CPU. Взаимоисключается с Enhanced. Применяй лишь при диагностике конкретного сбоя времени.",
+      "operations": [
+        {
+          "id": 200,
+          "kind": "BCD",
+          "help": "Меняет загрузочную конфигурацию. Эффект проверяется после перезагрузки. При шифровании нужен доступ к ключу восстановления.",
+          "description": "tscsyncpolicy = Legacy",
+          "group": "200"
+        }
+      ]
+    },
+    {
+      "id": "B54",
+      "key": "EXP_SEHOP",
+      "title": "SEH chain validation",
+      "category": "exp",
+      "context": "Откат: S + M                    Guard: G_ADVANCED + G_AV + G_CONFIRM",
+      "explanation": "Меняет механизм защиты обработки исключений. Для повседневного профиля сохрани штатную защиту.",
+      "operations": [
+        {
+          "id": 201,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Session Manager\\kernel DisableExceptionChainValidation = 1",
+          "group": "201"
+        }
+      ]
+    },
+    {
+      "id": "B55",
+      "key": "EXP_HETERO",
+      "title": "Гетерогенное планирование",
+      "category": "exp",
+      "context": "Откат: M                        Guard: G_ADVANCED + G_CPU_HYBRID (HARD)\n                                             + G_BUILD 22000 (HARD) + G_CONFIRM",
+      "explanation": "Меняет планирование на неоднородных ядрах CPU. Сравни активное приложение и параллельную фоновую работу.",
+      "operations": [
+        {
+          "id": 202,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Session Manager\\kernel DisableHeterogeneousThreadScheduling = 1",
+          "group": "202"
+        }
+      ]
+    },
+    {
+      "id": "B56",
+      "key": "EXP_DEF_RT",
+      "title": "Defender realtime",
+      "category": "exp",
+      "context": "Откат: S                        Guard: G_ADVANCED + G_TAMPER\n                                             + G_AV_THIRD (HARD) + G_CONFIRM",
+      "explanation": "Затрагивает защиту в реальном времени. Отдельно проверь, какая защита действительно активна на ПК.",
+      "operations": [
+        {
+          "id": 203,
+          "kind": "DEF",
+          "help": "Затрагивает защиту файлов или процессов антивирусом.",
+          "description": "DisableRealtimeMonitoring = true без стороннего AV система останется без защиты вообще",
+          "group": "203"
+        }
+      ]
+    },
+    {
+      "id": "B57",
+      "key": "EXP_CSTATES",
+      "title": "C-states и idle disable",
+      "category": "exp",
+      "context": "Откат: B + P                    Guard: G_ADVANCED + G_NOTLAPTOP + G_ACPOWER\n                                             + G_CONFIRM + BCD_SUSPEND",
+      "explanation": "Меняет доступность состояний простоя CPU. Возможны рост температуры, шума и энергопотребления.",
+      "operations": [
+        {
+          "id": 204,
+          "kind": "BCD",
+          "help": "Меняет загрузочную конфигурацию. Эффект проверяется после перезагрузки. При шифровании нужен доступ к ключу восстановления.",
+          "description": "disabledynamictick = yes",
+          "group": "204"
+        }
+      ]
+    },
+    {
+      "id": "B58",
+      "key": "EXP_POOL",
+      "title": "PoolUsageMax, PagedPoolSize",
+      "category": "exp",
+      "context": "Откат: M                        Guard: G_ADVANCED + G_RAM 32 (HARD)\n                                             + G_RAM_SOFT 64 + G_CONFIRM",
+      "explanation": "Меняет параметры пулов памяти ядра. При нехватке памяти эффект может проявляться только после длительной нагрузки.",
+      "operations": [
+        {
+          "id": 205,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Memory Management PoolUsageMaximum = 4294967295",
+          "group": "205"
+        },
+        {
+          "id": 206,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "Memory Management PagedPoolSize = 4294967295",
+          "group": "206"
+        }
+      ]
+    },
+    {
+      "id": "B59",
+      "key": "EXP_SUPERFETCH",
+      "title": "EnableSuperfetch",
+      "category": "exp",
+      "context": "Откат: M                        Guard: G_ADVANCED + G_ALLSSD (HARD)\n                                             + G_RAM_SOFT 16 + G_CONFIRM",
+      "explanation": "Меняет поведение предварительной загрузки. Сравни время запуска после перезагрузки и длительной обычной работы.",
+      "operations": [
+        {
+          "id": 207,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "PrefetchParameters EnableSuperfetch = 0 запрещает Windows включать кэш предзагрузки обратно",
+          "group": "207"
+        }
+      ]
+    },
+    {
+      "id": "B60",
+      "key": "EXP_ULTIMATE",
+      "title": "Схема Ultimate Performance",
+      "category": "exp",
+      "context": "Откат: P                        Guard: G_ADVANCED + G_NOTLAPTOP\n                                             + G_ACPOWER + G_CONFIRM",
+      "explanation": "Создаёт и активирует схему питания. Рост энергопотребления возможен и при небольшой нагрузке.",
+      "operations": [
+        {
+          "id": 208,
+          "kind": "NEWPWR",
+          "help": "Создаёт или активирует схему питания. Проверь активную схему после применения.",
+          "description": "создать схему Ultimate Performance если уже существует -> SKIP, копии не плодим",
+          "group": "208"
+        },
+        {
+          "id": 209,
+          "kind": "NEWPWR",
+          "help": "Создаёт или активирует схему питания. Проверь активную схему после применения.",
+          "description": "активировать схему порядок журнала: POWERNEW, затем POWERSCHEME. Reverse-replay сначала вернёт прежний план, потом удалит созданный: иначе powercfg откажется удалять активный.",
+          "group": "209"
+        }
+      ]
+    },
+    {
+      "id": "B61",
+      "key": "SMB1",
+      "title": "SMB1: сервер и клиент off",
+      "category": "safe",
+      "context": "Режимы: LIT MIN MED WRK MAX     Откат: журнал\n      Guard: нет. WARN про старый NAS и сетевые принтеры по SMB1.\n      Агрегат: две записи свёрнуты в одну операцию.",
+      "explanation": "Меняет поддержку устаревшего SMB1. Проверь старые NAS и сетевые устройства, которым нужен этот протокол.",
+      "operations": [
+        {
+          "id": 210,
+          "kind": "REG+SC",
+          "help": "Меняет связанные настройки службы и реестра для одной функции.",
+          "description": "LanmanServer\\Parameters SMB1 = 0; mrxsmb10 Start = 4",
+          "group": "210"
+        }
+      ]
+    },
+    {
+      "id": "B62",
+      "key": "IFEO_ECO",
+      "title": "Фон: приоритет апдейтеров",
+      "category": "safe",
+      "context": "Режимы: LIT MIN MED WRK MAX     Откат: журнал\n      Guard: нет. Приближение Efficiency Mode, не EcoQoS.\n      Агрегат: 24 записи для 8 апдейтеров свёрнуты в одну операцию.",
+      "explanation": "Меняет приоритет отдельных фоновых обновляторов. Обновления могут завершаться дольше, пока ты работаешь.",
+      "operations": [
+        {
+          "id": 211,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "IFEO\\<app>\\PerfOptions CpuPriorityClass=5 IoPriority=1 PagePriority=3",
+          "group": "211"
+        }
+      ]
+    },
+    {
+      "id": "B63",
+      "key": "AUTORUN",
+      "title": "Автозагрузка: 8 источников",
+      "category": "safe",
+      "context": "Режимы: MIN MED WRK MAX          Откат: журнал\n      Guard: нет. Whitelist по имени плюс валидная подпись файла.\n      Исключены: SecurityHealth, Defender, BlockTelemetry, Process Lasso,\n      ISLC, Windhawk, браузерные апдейтеры, драйверные хелперы.\n      Агрегаты: одна операция на источник, число записей не влияет.",
+      "explanation": "Обрабатывает элементы автозагрузки из нескольких источников. Перед отключением проверь имя, источник и нужность синхронизации после входа.",
+      "operations": [
+        {
+          "id": 212,
+          "kind": "REGDEL",
+          "help": "Удаляет значение. Далее применяется поведение, заданное самой системой или программой.",
+          "description": "HKCU\\CurrentVersion\\Run кандидаты whitelist",
+          "group": "212"
+        },
+        {
+          "id": 213,
+          "kind": "REGDEL",
+          "help": "Удаляет значение. Далее применяется поведение, заданное самой системой или программой.",
+          "description": "HKCU\\CurrentVersion\\RunOnce кандидаты whitelist",
+          "group": "213"
+        },
+        {
+          "id": 214,
+          "kind": "REGDEL",
+          "help": "Удаляет значение. Далее применяется поведение, заданное самой системой или программой.",
+          "description": "HKLM\\CurrentVersion\\Run кандидаты whitelist",
+          "group": "214"
+        },
+        {
+          "id": 215,
+          "kind": "REGDEL",
+          "help": "Удаляет значение. Далее применяется поведение, заданное самой системой или программой.",
+          "description": "HKLM\\CurrentVersion\\RunOnce кандидаты whitelist",
+          "group": "215"
+        },
+        {
+          "id": 216,
+          "kind": "REGDEL",
+          "help": "Удаляет значение. Далее применяется поведение, заданное самой системой или программой.",
+          "description": "HKLM\\Wow6432Node\\CurrentVersion\\Run кандидаты whitelist",
+          "group": "216"
+        },
+        {
+          "id": 217,
+          "kind": "LNKMOVE",
+          "help": "Перемещает ярлык автозагрузки. Само приложение остаётся установленным.",
+          "description": "Startup пользователя в подпапку Disabled",
+          "group": "217"
+        },
+        {
+          "id": 218,
+          "kind": "LNKMOVE",
+          "help": "Перемещает ярлык автозагрузки. Само приложение остаётся установленным.",
+          "description": "Startup общий в подпапку Disabled",
+          "group": "218"
+        },
+        {
+          "id": 219,
+          "kind": "TASK",
+          "help": "Меняет состояние задания. При отключении оно перестаёт запускаться по расписанию.",
+          "description": "задачи с logon-триггером из whitelist",
+          "group": "219"
+        }
+      ]
+    },
+    {
+      "id": "B64",
+      "key": "STORAGE_SAFE",
+      "title": "Кэши: DO, WER, WU, шейдеры",
+      "category": "safe",
+      "context": "Режимы: MIN MED WRK MAX          Откат: необратимо, кэши регенерируются\n      Guard: нет. WARN про микрофриз после чистки кэша шейдеров.\n      Temp, шрифты и миниатюры не дублируются: их чистит B16 MAINT.\n      Агрегаты: одна операция на группу путей.",
+      "explanation": "Очищает несколько кэшей. Место освобождается сразу; первый запуск и построение шейдеров могут занять больше времени.",
+      "operations": [
+        {
+          "id": 220,
+          "kind": "PURGE",
+          "help": "Удаляет файлы. Журнал не сохраняет их содержимое.",
+          "description": "Delivery Optimization Cache, два возможных пути",
+          "group": "220"
+        },
+        {
+          "id": 221,
+          "kind": "PURGE",
+          "help": "Удаляет файлы. Журнал не сохраняет их содержимое.",
+          "description": "WER ReportQueue, ReportArchive, CrashDumps",
+          "group": "221"
+        },
+        {
+          "id": 222,
+          "kind": "PURGE",
+          "help": "Удаляет файлы. Журнал не сохраняет их содержимое.",
+          "description": "SoftwareDistribution\\Download",
+          "group": "222"
+        },
+        {
+          "id": 223,
+          "kind": "PURGE",
+          "help": "Удаляет файлы. Журнал не сохраняет их содержимое.",
+          "description": "D3DSCache, AMD DxCache, NVIDIA DXCache",
+          "group": "223"
+        }
+      ]
+    },
+    {
+      "id": "B65",
+      "key": "STORAGE_DEEP",
+      "title": "WinSxS, Windows.old, логи",
+      "category": "warn",
+      "context": "Режимы: MED MAX                  Откат: необратимо\n      Guard: G_CONFIRM на ResetBase и Windows.old, нужен Advanced и YES.\n      DISM код 3010 считается успехом с требованием перезагрузки.",
+      "explanation": "Выполняет глубокую очистку компонентов и старых файлов Windows. Некоторые варианты восстановления и диагностики могут стать недоступны.",
+      "operations": [
+        {
+          "id": 224,
+          "kind": "DISM",
+          "help": "Выполняет обслуживание компонентов Windows. Дождись завершения.",
+          "description": "/StartComponentCleanup",
+          "group": "224"
+        },
+        {
+          "id": 225,
+          "kind": "DISM",
+          "help": "Выполняет обслуживание компонентов Windows. Дождись завершения.",
+          "description": "/StartComponentCleanup /ResetBase, обновления станут неудаляемыми",
+          "group": "225"
+        },
+        {
+          "id": 226,
+          "kind": "PURGEDIR",
+          "help": "Удаляет каталог или его содержимое. Для возврата файлов нужна собственная копия.",
+          "description": "Windows.old",
+          "group": "226"
+        },
+        {
+          "id": 227,
+          "kind": "PURGEDIR",
+          "help": "Удаляет каталог или его содержимое. Для возврата файлов нужна собственная копия.",
+          "description": "$Windows.~BT и $Windows.~WS, агрегат",
+          "group": "227"
+        },
+        {
+          "id": 228,
+          "kind": "PURGE",
+          "help": "Удаляет файлы. Журнал не сохраняет их содержимое.",
+          "description": "SoftwareDistribution\\DataStore",
+          "group": "228"
+        },
+        {
+          "id": 229,
+          "kind": "PURGE",
+          "help": "Удаляет файлы. Журнал не сохраняет их содержимое.",
+          "description": "Logs\\CBS, Logs\\DISM, Panther, агрегат",
+          "group": "229"
+        }
+      ]
+    },
+    {
+      "id": "B66",
+      "key": "SERVICES_EXT",
+      "title": "Службы по факту устройств",
+      "category": "warn",
+      "context": "Режимы: MAX                      Откат: U службы\n      Guard: факт наличия устройства. Значение -1 неизвестно и означает НЕ отключать.\n      Каждая служба считается отдельно, при блокировке группы даёт SKIP по каждой.",
+      "explanation": "Меняет запуск служб по обнаруженным устройствам. Если подключаешь периферию время от времени, проверь её сценарии отдельно.",
+      "operations": [
+        {
+          "id": 230,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "ScDeviceEnum SCPolicySvc CertPropSvc, факт FT_SMARTCARD и FT_DOMAIN",
+          "group": "230-232"
+        },
+        {
+          "id": 231,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "ScDeviceEnum SCPolicySvc CertPropSvc, факт FT_SMARTCARD и FT_DOMAIN",
+          "group": "230-232"
+        },
+        {
+          "id": 232,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "ScDeviceEnum SCPolicySvc CertPropSvc, факт FT_SMARTCARD и FT_DOMAIN",
+          "group": "230-232"
+        },
+        {
+          "id": 233,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "bthserv BTAGService BthAvctpSvc, факт FT_BT",
+          "group": "233-235"
+        },
+        {
+          "id": 234,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "bthserv BTAGService BthAvctpSvc, факт FT_BT",
+          "group": "233-235"
+        },
+        {
+          "id": 235,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "bthserv BTAGService BthAvctpSvc, факт FT_BT",
+          "group": "233-235"
+        },
+        {
+          "id": 236,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "TermService SessionEnv UmRdpService, факт FT_RDP",
+          "group": "236-238"
+        },
+        {
+          "id": 237,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "TermService SessionEnv UmRdpService, факт FT_RDP",
+          "group": "236-238"
+        },
+        {
+          "id": 238,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "TermService SessionEnv UmRdpService, факт FT_RDP",
+          "group": "236-238"
+        },
+        {
+          "id": 239,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "WbioSrvc SEMgrSvc, факты FT_BIOMETRIC и FT_NFC",
+          "group": "239-240"
+        },
+        {
+          "id": 240,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "WbioSrvc SEMgrSvc, факты FT_BIOMETRIC и FT_NFC",
+          "group": "239-240"
+        },
+        {
+          "id": 241,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "TapiSrv PhoneSvc SmsRouter, факт FT_MODEM",
+          "group": "241-243"
+        },
+        {
+          "id": 242,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "TapiSrv PhoneSvc SmsRouter, факт FT_MODEM",
+          "group": "241-243"
+        },
+        {
+          "id": 243,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "TapiSrv PhoneSvc SmsRouter, факт FT_MODEM",
+          "group": "241-243"
+        },
+        {
+          "id": 244,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "lfsvc SensorService SensrSvc, факт FT_SENSOR",
+          "group": "244-246"
+        },
+        {
+          "id": 245,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "lfsvc SensorService SensrSvc, факт FT_SENSOR",
+          "group": "244-246"
+        },
+        {
+          "id": 246,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "lfsvc SensorService SensrSvc, факт FT_SENSOR",
+          "group": "244-246"
+        },
+        {
+          "id": 247,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "MapsBroker TrkWks WpcMonSvc, без гварда, WARN",
+          "group": "247-249"
+        },
+        {
+          "id": 248,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "MapsBroker TrkWks WpcMonSvc, без гварда, WARN",
+          "group": "247-249"
+        },
+        {
+          "id": 249,
+          "kind": "SVC",
+          "help": "Меняет тип запуска службы. Проверь зависимые функции после перезагрузки.",
+          "description": "MapsBroker TrkWks WpcMonSvc, без гварда, WARN",
+          "group": "247-249"
+        }
+      ]
+    },
+    {
+      "id": "B67",
+      "key": "PROVISIONED",
+      "title": "Provisioned: 17 плюс 13 по YES",
+      "category": "warn",
+      "context": "Режимы: MAX                      Откат: необратимо, восстановление через Store или образ\n      Guard: G_CONFIRM на ярус B. Whitelist зависимостей внутри verb, второй слой защиты.\n      Не трогаются никогда: WindowsStore, StorePurchaseApp, DesktopAppInstaller winget,\n      SecHealthUI, VCLibs, NET.Native, UI.Xaml, WindowsAppRuntime, AAD.BrokerPlugin,\n      LockApp, StartMenuExperienceHost, ShellExperienceHost, CloudExperienceHost,\n      OOBENetwork, AppRep.ChxApp SmartScreen, XboxGameCallableUI, BioEnrollment, Edge.",
+      "explanation": "Удаляет подготовленные пакеты для будущих профилей. Последствия для нового пользователя отличаются от удаления приложения только у текущего.",
+      "operations": [
+        {
+          "id": 250,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус A, 17 мусорных семейств",
+          "group": "250-266"
+        },
+        {
+          "id": 251,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус A, 17 мусорных семейств",
+          "group": "250-266"
+        },
+        {
+          "id": 252,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус A, 17 мусорных семейств",
+          "group": "250-266"
+        },
+        {
+          "id": 253,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус A, 17 мусорных семейств",
+          "group": "250-266"
+        },
+        {
+          "id": 254,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус A, 17 мусорных семейств",
+          "group": "250-266"
+        },
+        {
+          "id": 255,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус A, 17 мусорных семейств",
+          "group": "250-266"
+        },
+        {
+          "id": 256,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус A, 17 мусорных семейств",
+          "group": "250-266"
+        },
+        {
+          "id": 257,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус A, 17 мусорных семейств",
+          "group": "250-266"
+        },
+        {
+          "id": 258,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус A, 17 мусорных семейств",
+          "group": "250-266"
+        },
+        {
+          "id": 259,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус A, 17 мусорных семейств",
+          "group": "250-266"
+        },
+        {
+          "id": 260,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус A, 17 мусорных семейств",
+          "group": "250-266"
+        },
+        {
+          "id": 261,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус A, 17 мусорных семейств",
+          "group": "250-266"
+        },
+        {
+          "id": 262,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус A, 17 мусорных семейств",
+          "group": "250-266"
+        },
+        {
+          "id": 263,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус A, 17 мусорных семейств",
+          "group": "250-266"
+        },
+        {
+          "id": 264,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус A, 17 мусорных семейств",
+          "group": "250-266"
+        },
+        {
+          "id": 265,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус A, 17 мусорных семейств",
+          "group": "250-266"
+        },
+        {
+          "id": 266,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус A, 17 мусорных семейств",
+          "group": "250-266"
+        },
+        {
+          "id": 267,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус B, 13 функциональных, только через YES",
+          "group": "267-279"
+        },
+        {
+          "id": 268,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус B, 13 функциональных, только через YES",
+          "group": "267-279"
+        },
+        {
+          "id": 269,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус B, 13 функциональных, только через YES",
+          "group": "267-279"
+        },
+        {
+          "id": 270,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус B, 13 функциональных, только через YES",
+          "group": "267-279"
+        },
+        {
+          "id": 271,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус B, 13 функциональных, только через YES",
+          "group": "267-279"
+        },
+        {
+          "id": 272,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус B, 13 функциональных, только через YES",
+          "group": "267-279"
+        },
+        {
+          "id": 273,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус B, 13 функциональных, только через YES",
+          "group": "267-279"
+        },
+        {
+          "id": 274,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус B, 13 функциональных, только через YES",
+          "group": "267-279"
+        },
+        {
+          "id": 275,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус B, 13 функциональных, только через YES",
+          "group": "267-279"
+        },
+        {
+          "id": 276,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус B, 13 функциональных, только через YES",
+          "group": "267-279"
+        },
+        {
+          "id": 277,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус B, 13 функциональных, только через YES",
+          "group": "267-279"
+        },
+        {
+          "id": 278,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус B, 13 функциональных, только через YES",
+          "group": "267-279"
+        },
+        {
+          "id": 279,
+          "kind": "APPXPROV",
+          "help": "Меняет набор пакетов для будущих учётных записей. Для возврата может потребоваться пакет установки.",
+          "description": "ярус B, 13 функциональных, только через YES",
+          "group": "267-279"
+        }
+      ]
+    },
+    {
+      "id": "B68",
+      "key": "NIC_DRIVER",
+      "title": "Ethernet: энергосбережение, RSC",
+      "category": "warn",
+      "context": "Режимы: MAX                      Откат: N сеть\n      Guard: только физический Ethernet, три фильтра. На ноутбуке G_CONFIRM с YES.\n      Имена значений ищутся по алиасам: NDIS со звёздочкой, Realtek без и иначе.\n      Отсутствующие ключи не создаются. Flow Control и WoL не трогаются.",
+      "explanation": "Меняет поддерживаемые драйвером свойства Ethernet. Сравни связь под нагрузкой, выход из сна и потребление.",
+      "operations": [
+        {
+          "id": 280,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "*InterruptModeration = 0",
+          "group": "280"
+        },
+        {
+          "id": 281,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "*EEE или EEE = 0",
+          "group": "281"
+        },
+        {
+          "id": 282,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "AdvancedEEE = 0",
+          "group": "282"
+        },
+        {
+          "id": 283,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "EnableGreenEthernet или GreenEthernet = 0",
+          "group": "283"
+        },
+        {
+          "id": 284,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "GigaLite или GigabitLite = 0",
+          "group": "284"
+        },
+        {
+          "id": 285,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "PowerDownPll = 0",
+          "group": "285"
+        },
+        {
+          "id": 286,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "SelectiveSuspend или PowerSavingMode = 0",
+          "group": "286"
+        },
+        {
+          "id": 287,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "*PMARPOffload = 0",
+          "group": "287"
+        },
+        {
+          "id": 288,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "*PMNSOffload = 0",
+          "group": "288"
+        },
+        {
+          "id": 289,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "*RscIPv4 = 0",
+          "group": "289"
+        },
+        {
+          "id": 290,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "*RscIPv6 = 0",
+          "group": "290"
+        },
+        {
+          "id": 291,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "ASPM = 0",
+          "group": "291"
+        },
+        {
+          "id": 292,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "CLKREQ = 0",
+          "group": "292"
+        },
+        {
+          "id": 293,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "*RSS = 1, SKIP на одноочередных Realtek GbE",
+          "group": "293"
+        }
+      ]
+    },
+    {
+      "id": "B69",
+      "key": "DO_PEERING",
+      "title": "Запрет раздачи обновлений пирам",
+      "category": "safe",
+      "context": "Режимы: MIN MED WRK MAX          Откат: N сеть\n      Guard: нет. Служба DoSvc не отключается, обновления работают.\n      Мотивация: раздача пирам забивает исходящий канал и таблицу NAT\n      бытового роутера, что даёт провалы скорости во всех приложениях.",
+      "explanation": "Ограничивает обмен обновлениями между устройствами. Проверь, как это повлияет на загрузки остальных ПК в сети.",
+      "operations": [
+        {
+          "id": 294,
+          "kind": "KEY",
+          "help": "Готовит раздел для следующего параметра. Само создание раздела не ускоряет систему.",
+          "description": "Policies\\Microsoft\\Windows\\DeliveryOptimization",
+          "group": "294"
+        },
+        {
+          "id": 295,
+          "kind": "REG",
+          "help": "Запись параметра. Изменение можно проверить сравнением значения до и после.",
+          "description": "DODownloadMode = 0, только HTTP с CDN, без peer caching",
+          "group": "295"
+        }
+      ]
+    }
+  ]
+}

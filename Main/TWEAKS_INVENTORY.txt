@@ -1,0 +1,818 @@
+﻿===========================================================================
+ W I N P U L S E   7.1   -   T W E A K S   I N V E N T O R Y
+ Полный инвентарь: 292 операции, 69 блоков
+ Поиск в WinPulse.exe: раздел «Каталог». Введи ID, название блока или параметр.
+===========================================================================
+
+Файл: Main\TWEAKS_INVENTORY.txt
+Кодировка: UTF-8 с BOM.
+
+---------------------------------------------------------------------------
+ КАК ПОЛЬЗОВАТЬСЯ ЭТИМ ФАЙЛОМ
+---------------------------------------------------------------------------
+
+Это сверочный документ, не инструкция. Инструкции - в README.txt
+и MANUAL_STEPS.txt.
+
+Зачем он нужен:
+  1. Каждый блок в коде объявляет ожидание: BLOCK_BEGIN "ИМЯ" N.
+     Число N берётся отсюда. BLOCK_END сверяет факт с ожиданием
+     и пишет WARN при расхождении. Расхождение = потерянный твик.
+  2. При ручной сборке или правке файлов можно пересчитать операции
+     и найти, что выпало.
+  3. AUDIT.py сверяет суммы в END OF FILE против этого инвентаря.
+
+Итоговая арифметика:
+  SAFE      148 операций   24 блока
+  WARN      116 операций   25 блоков
+  DANGER     14 операций    8 блоков   ID 181-194
+  EXP        14 операций   12 блоков   ID 196-209
+  ------------------------------------------------
+  ВСЕГО     292 операции   69 блоков
+
+Состав режимов:
+  LITE      60    MINIMUM 114    MEDIUM  155    WORK  124    MAXIMUM 278
+  Experimental 14 применяется отдельно и в режимы не входит.
+  278 + 14 = 292.
+
+Обозначения режимов:
+  LIT = LITE   MIN = MINIMUM   MED = MEDIUM   WRK = WORK   MAX = MAXIMUM
+
+Типы записи (обёртки core.cmd и backup.cmd):
+  REG      REG_SET / REG_DEL          значение реестра
+  KEY      REG_KEY                    создание ключа
+  ACL      REGACL_SET                 реестр под TrustedInstaller
+  SVC      SC_SET                     тип запуска службы
+  STOP     SC_STOP                    остановка службы
+  BCD      BCD_SET / BCD_DEL          элемент загрузчика
+  PWR      POWER_SET                  индекс AC/DC параметра питания
+  SCHEME   POWER_SCHEME               активная схема питания
+  NEWPWR   POWER_ULTIMATE             создание и активация схемы
+  TCP      NETSH_TCP                  глобальный параметр стека
+  SUPP     NETSH_SUPP                 supplemental template
+  FLUSH    NET_FLUSH                  сброс кэша dns/arp
+  FSU      FSUTIL_SET                 поведение NTFS
+  TASK     TASK_DISABLE               задача планировщика
+  MM       MM_SET                     MMAgent
+  DEF      DEF_EXCL / DEF_SET         Defender
+  APPX     APPX_REMOVE                удаление пакета, необратимо
+  PURGE    PURGE_FILES                удаление файлов, необратимо
+  HIB      HIBER_SET                  гибернация и hiberfil.sys
+  DISM     RESERVED_SET               Reserved Storage
+  PROC     taskkill                   перезапуск процесса
+  SKIP     осознанный пропуск         считается операцией, ничего не пишет
+
+Группы отката: V визуал, N сеть, P питание, B BCD, S безопасность,
+G игры и GPU, M память и NTFS, U службы, W UX и телеметрия.
+Одна запись может входить в несколько групп.
+
+---------------------------------------------------------------------------
+ SAFE - 132 операции, 19 блоков
+---------------------------------------------------------------------------
+
+[B01] TELEMETRY                       safe    24 ops    ID 001-024
+      Режимы: LIT MIN MED WRK MAX     Откат: W + U (службы)
+      Guard: нет, приватность безопасна на любой конфигурации
+      001  SVC   DiagTrack = disabled
+      002  SVC   dmwappushservice = disabled
+      003  STOP  DiagTrack
+      004  STOP  dmwappushservice
+      005  REG   Policies\Windows\DataCollection AllowTelemetry = 0
+      006  REG   CurrentVersion\Policies\DataCollection AllowTelemetry = 0
+      007  REG   Policies\Windows\DataCollection DoNotShowFeedbackNotifications = 1
+      008  REG   HKCU AdvertisingInfo Enabled = 0
+      009  REG   HKCU Explorer\Advanced Start_TrackProgs = 0
+      010  REG   HKCU Siuf\Rules NumberOfSIUFInPeriod = 0
+      011  REG   HKCU ContentDeliveryManager SubscribedContent-310093Enabled = 0
+      012  REG   HKCU ContentDeliveryManager SubscribedContent-338387Enabled = 0
+      013  REG   HKCU ContentDeliveryManager SubscribedContent-338388Enabled = 0
+      014  REG   HKCU ContentDeliveryManager SubscribedContent-338389Enabled = 0
+      015  REG   HKCU ContentDeliveryManager SubscribedContent-338393Enabled = 0
+      016  REG   HKCU ContentDeliveryManager SubscribedContent-353694Enabled = 0
+      017  REG   HKCU ContentDeliveryManager SubscribedContent-353696Enabled = 0
+      018  REG   HKCU ContentDeliveryManager SubscribedContent-353698Enabled = 0
+      019  REG   HKCU ContentDeliveryManager SystemPaneSuggestionsEnabled = 0
+      020  REG   HKCU ContentDeliveryManager SilentInstalledAppsEnabled = 0
+      021  REG   Policies\Windows\System EnableActivityFeed = 0
+      022  REG   Policies\Windows\System UploadUserActivities = 0
+      023  REG   Policies\Windows\AppCompat AITEnable = 0
+      024  REG   Policies\Windows\Windows Error Reporting Disabled = 1
+
+[B02] NET_STD                         safe    10 ops    ID 025-034
+      Режимы: LIT MIN MED WRK MAX     Откат: N + U
+      Guard: G_NETWORK (SOFT при активном Zapret)
+      025  REG   Tcpip\Parameters\Interfaces\{GUID} TcpAckFrequency = 1
+                 одна операция на ВСЕ активные адаптеры, журнал по каждому
+      026  REG   Tcpip\Parameters\Interfaces\{GUID} TCPNoDelay = 1
+                 то же; в корень Tcpip\Parameters эти значения не работают
+      027  REG   Tcpip\Parameters DefaultTTL = 64
+      028  REG   Dnscache\Parameters CacheHashTableBucketSize = 1
+      029  REG   Dnscache\Parameters CacheHashTableSize = 384
+      030  REG   Dnscache\Parameters MaxCacheEntryTtlLimit = 86400
+      031  REG   Dnscache\Parameters MaxSOACacheEntryTtlLimit = 300
+      032  REG   Multimedia\SystemProfile NetworkThrottlingIndex = 4294967295
+      033  TCP   autotuninglevel = normal
+      034  FLUSH dns
+
+[B03] NET_PORTS                       safe     4 ops    ID 035-038
+      Режимы: MIN MED WRK MAX         Откат: N + U
+      Guard: G_NETWORK
+      035  REG   Tcpip\Parameters MaxUserPort = 65534
+      036  REG   Tcpip\Parameters TcpTimedWaitDelay = 30
+      037  REG   Tcpip\Parameters SackOpts = 1
+                 легаси XP, стек Win10/11 игнорирует; сохранён из списка
+      038  REG   AFD\Parameters NonblockingSendSpecialCase = 1
+                 легаси XP, то же
+
+[B04] POWER                           safe     5 ops    ID 039-043
+      Режимы: LIT MIN MED WRK MAX     Откат: P
+      Guard: нет; WARN на ноутбуке, DC везде KEEP
+      039  SCHEME SCHEME_MIN (High Performance)
+      040  PWR   SUB_PROCESSOR CPMINCORES AC = 100
+      041  PWR   SUB_PROCESSOR CPMAXCORES AC = 100
+      042  PWR   SUB_USB 48e6b7a6-50f5-4782-a5d4-53bb8f07e226 AC = 0
+      043  PWR   SUB_PROCESSOR PERFBOOSTMODE AC = 2
+
+[B05] POWER_THROTTLE                  safe     2 ops    ID 044-045
+      Режимы: MIN MED WRK MAX         Откат: P
+      Guard: нет
+      044  KEY   Control\Power\PowerThrottling
+      045  REG   Control\Power\PowerThrottling PowerThrottlingOff = 0
+
+[B06] UWP                             safe    13 ops    ID 046-058
+      Режимы: LIT(sel) MIN(full) MED(full) WRK(sel) MAX(full)
+      Откат: НЕОБРАТИМО, список в appx_removed.txt
+      Guard: для full - CONFIRM, при отказе переход на selective
+      selective = ID 046-051 (6 операций)
+      full      = ID 046-058 (13 операций)
+      Удаление только для целевого SID, provisioned не трогаем.
+      046  APPX  *CandyCrush*
+      047  APPX  *TikTok*
+      048  APPX  *Facebook*
+      049  APPX  *Twitter*
+      050  APPX  *Disney*
+      051  APPX  *BubbleWitch*
+      052  APPX  *Spotify*                              только full
+      053  APPX  *BingWeather*                          только full
+      054  APPX  *BingNews*                             только full
+      055  APPX  *BingSports*                           только full
+      056  APPX  *BingFinance*                          только full
+      057  APPX  *Microsoft.BingSearch*                 только full
+      058  APPX  *Windows.Client.WebExperience*         только full, Widgets
+
+[B07] SCHTASKS                        safe     7 ops    ID 059-065
+      Режимы: LIT MIN MED WRK MAX     Откат: W
+      Guard: нет; отсутствующая задача даёт SKIP
+      059  TASK  CEIP\Consolidator
+      060  TASK  CEIP\UsbCeip
+      061  TASK  Application Experience\ProgramDataUpdater
+      062  TASK  Feedback\Siuf\DmClient
+      063  TASK  Windows Error Reporting\QueueReporting
+      064  TASK  MemoryDiagnostic\RunFullMemoryDiagnostic
+      065  TASK  Maintenance\WinSAT
+
+[B08] DEFENDER_EXC                    safe    10 ops    ID 066-075
+      Режимы: MIN MED MAX             Откат: S
+      Guard: G_TAMPER (INFO), блок не начинается при включённом Tamper
+      066  DEF   path add  C:\Program Files (x86)\Steam
+      067  DEF   path add  C:\Program Files\Steam
+      068  DEF   path add  C:\Program Files\Epic Games
+      069  DEF   path add  C:\Games
+      070  DEF   path add  D:\Games
+      071  DEF   proc add  cs2.exe
+      072  DEF   proc add  csgo.exe
+      073  DEF   proc add  steam.exe
+      074  DEF   proc add  steamwebhelper.exe
+      075  DEF   proc add  Discord.exe
+
+[B09] SERVICES                        safe     3 ops    ID 076-078
+      Режимы: MIN MED WRK MAX         Откат: U
+      Guard: нет; отсутствующая служба даёт SKIP
+      076  SVC   Fax = disabled
+      077  SVC   RemoteRegistry = disabled
+      078  SVC   RetailDemo = disabled
+
+[B10] SPOOLER                         safe     2 ops    ID 079-080
+      Режимы: MIN MED WRK MAX         Откат: U
+      Guard: CONFIRM по умолчанию Нет; отказ = блок не начинается
+      079  STOP  Spooler
+      080  SVC   Spooler = disabled
+
+[B11] DEFRAG                          safe     1 op     ID 081
+      Режимы: MAX                     Откат: U
+      Guard: G_ALLSSD (HARD) + G_CONFIRM про плановый Retrim
+      081  SVC   defragsvc = disabled
+                 отключает и плановый TRIM; вручную потом defrag /L
+
+[B12] VISUAL                          safe    10 ops    ID 082-091
+      Режимы: MED WRK MAX             Откат: V
+      Guard: профиль Keep = блок не начинается, 0 операций
+      Профиль-зависимые пункты дают SKIP, итог всегда 10.
+      Performance: применяются 084 086 087 088 089 090 091  (7)
+      Balanced:    применяются 082 084 088 089 090 091      (6)
+      MotionOnly:  применяется только 084; VISUAL_AGG пропускается.
+      Comfort:     применяются 083 089 090 091              (4)
+      Work:        применяются 082 085 089 090 091          (5)
+      082  REG   HKCU Control Panel\Desktop MenuShowDelay = 100
+      083  REG   HKCU Control Panel\Desktop MenuShowDelay = 200
+      084  REG   HKCU Desktop\WindowMetrics MinAnimate = 0
+      085  REG   HKCU Themes\Personalize EnableTransparency = 1
+      086  REG   HKCU Explorer\VisualEffects VisualFXSetting = 2
+      087  REG   HKCU Control Panel\Desktop UserPreferencesMask = 9012038010000000
+      088  REG   HKCU Explorer\Advanced UseCompactMode = 1
+      089  REG   HKCU Explorer\Advanced ShowSyncProviderNotifications = 0
+      090  REG   Policies\Windows\System DisableAcrylicBackgroundOnLogon = 1
+      091  REG   HKCU ContentDeliveryManager RotatingLockScreenEnabled = 0
+
+[B13] GAMING                          safe    10 ops    ID 092-101
+      Режимы: MED MAX                 Откат: G
+      Guard: нет
+      092  REG   HKCU GameBar AllowAutoGameMode = 1
+      093  REG   HKCU GameBar AutoGameModeEnabled = 1
+      094  REG   HKCU GameBar UseNexusForGameBarEnabled = 0
+      095  REG   HKCU GameDVR AppCaptureEnabled = 0
+      096  REG   HKCU GameConfigStore GameDVR_Enabled = 0
+      097  REG   Policies\Windows\GameDVR AllowGameDVR = 0
+      098  REG   HKCU GameConfigStore GameDVR_FSEBehaviorMode = 2
+      099  REG   HKCU GameConfigStore GameDVR_HonorUserFSEBehaviorMode = 1
+      100  REG   HKCU GameConfigStore GameDVR_FSEBehavior = 2
+      101  REG   HKCU GameConfigStore GameDVR_DXGIHonorFSEWindowsCompatible = 1
+
+[B14] UX                              safe     6 ops    ID 102-107
+      Режимы: MIN MED WRK MAX         Откат: W
+      Guard: 107 только Win11, иначе SKIP
+      102  REG   HKCU Policies\Windows\Explorer DisableSearchBoxSuggestions = 1
+      103  REG   Policies\Windows\Windows Search DisableWebSearch = 1
+      104  REG   Policies\Windows\Windows Search ConnectedSearchUseWeb = 0
+      105  REG   HKCU Policies\Windows\WindowsCopilot TurnOffWindowsCopilot = 1
+      106  REG   HKLM Policies\Windows\WindowsCopilot TurnOffWindowsCopilot = 1
+      107  REG   HKCU Explorer\Advanced TaskbarDa = 0
+
+[B15] WORK                            safe     5 ops    ID 108-112
+      Режимы: WRK MAX                 Откат: G + V + U + N
+      Guard: нет; WARN если вендор GPU не определён
+      108  REG   GraphicsDrivers HwSchMode = 2                (HAGS)
+      109  REG   HKCU Control Panel\Desktop WaitToKillAppTimeout = 2000
+      110  REG   Control WaitToKillServiceTimeout = 2000
+      111  SVC   WSearch = delayed
+      112  SUPP  template Internet congestionprovider = ctcp
+
+[B16] MAINT                           safe     9 ops    ID 113-121
+      Режимы: MED WRK MAX + [C] Обслуживание    Откат: M + НЕОБРАТИМО
+      Guard: G_GLOBAL и точка восстановления при вызове из меню [C]
+      Пути берутся из профиля РЕАЛЬНОГО пользователя, не админа.
+      Остановка FontCache идёт с NOCOUNT и операцией не считается.
+      113  PURGE %USERPROFILE%\AppData\Local\Temp\*        рекурсивно
+      114  PURGE %WINDIR%\Temp\*                           рекурсивно
+      115  PURGE FontCache\*.dat                           после stop FontCache
+      116  PURGE Explorer\thumbcache_*.db
+      117  PROC  wsreset.exe                               под CONFIRM
+      118  FSU   disable8dot3 = 1
+      119  FSU   disablelastaccess = 1
+      120  FSU   memoryusage = 2
+      121  FSU   disabledeletenotify = 0                   TRIM включён
+
+[B17] INPUT                           safe     5 ops    ID 122-126
+      Режимы: LIT MIN MED WRK MAX     Откат: W
+      Guard: нет
+      122  REG   HKCU Control Panel\Keyboard KeyboardDelay = 0
+      123  REG   HKCU Control Panel\Keyboard KeyboardSpeed = 31
+      124  REG   HKCU Accessibility\StickyKeys Flags = 506
+      125  REG   HKCU Accessibility\ToggleKeys Flags = 58
+      126  REG   HKCU Accessibility\Keyboard Response Flags = 126
+
+[B18] PRIVACY_EXT                     safe     5 ops    ID 127-131
+      Режимы: MIN MED WRK MAX         Откат: W
+      Guard: 131 под CONFIRM по умолчанию Нет
+      127  REG   CapabilityAccessManager\ConsentStore\location Value = Deny
+      128  REG   Policies\Windows\LocationAndSensors DisableLocation = 1
+      129  REG   Policies\Windows\LocationAndSensors DisableSensors = 1
+      130  REG   Policies\Windows\CloudContent DisableWindowsConsumerFeatures = 1
+      131  REG   HKCU BackgroundAccessApplications GlobalUserDisabled = 1
+
+[B19] WEBDAV                          safe     1 op     ID 132
+      Режимы: MIN MED WRK MAX         Откат: N + U
+      Guard: наличие службы WebClient, иначе блок не начинается
+      132  REG   WebClient\Parameters FileSizeLimitInBytes = 4294967295
+
+---------------------------------------------------------------------------
+ КОНТРОЛЬ SAFE
+---------------------------------------------------------------------------
+
+  B01 TELEMETRY        24      B11 DEFRAG            1
+  B02 NET_STD          10      B12 VISUAL           10
+  B03 NET_PORTS         4      B13 GAMING           10
+  B04 POWER             5      B14 UX                6
+  B05 POWER_THROTTLE    2      B15 WORK              5
+  B06 UWP              13      B16 MAINT             9
+  B07 SCHTASKS          7      B17 INPUT             5
+  B08 DEFENDER_EXC     10      B18 PRIVACY_EXT       5
+  B09 SERVICES          3      B19 WEBDAV            1
+  B10 SPOOLER           2
+  ------------------------------------------------------
+  ИТОГО SAFE: 132 операции, 19 блоков
+
+  В tweaks_safe.cmd: :: END OF FILE | Всего твиков в файле: 148
+
+
+---------------------------------------------------------------------------
+ WARN - 48 операций, 21 блок
+---------------------------------------------------------------------------
+
+[B20] PRIORITY                        warn     2 ops    ID 133-134
+      Режимы: MED(2/20) WRK(2/20) MAX(выбор/0)    Откат: G
+      Guard: WARN при 38 и cores<6; WARN при 40 (снимает буст переднего плана)
+      Выбор Win32PrioritySeparation: 2 / 26 / 38 / 40, дефолт 2.
+      ID 135-136 зарезервированы после ревизии 7.1a, нумерация далее не сдвинута.
+      133  REG   Control\PriorityControl Win32PrioritySeparation = выбор
+      134  REG   Multimedia\SystemProfile SystemResponsiveness = выбор
+
+[B21] MEMORY                          warn     5 ops    ID 137-141
+      Режимы: MAX                     Откат: M
+      Guard: G_RAM 8 (HARD) на блок; 138 требует 16 ГБ, 141 требует 32 ГБ
+      137  REG   Memory Management DisablePagingExecutive = 1
+      138  MM    PageCombining = off
+      139  REG   Control SvcHostSplitThresholdInKB = RAM_GB * 1048576
+                 потолок 1024 ГБ: set /a 32-битный
+      140  REG   Memory Management LargeSystemCache = 0
+      141  MM    MemoryCompression = off
+
+[B22] MMCSS                           warn     4 ops    ID 142-145
+      Режимы: MED MAX                 Откат: G
+      Guard: нет; создание ключа Tasks\Games идёт без счётчика
+      142  REG   Multimedia\SystemProfile\Tasks\Games GPU Priority = 8
+      143  REG   Multimedia\SystemProfile\Tasks\Games Priority = 6
+      144  REG   Multimedia\SystemProfile\Tasks\Games Scheduling Category = High
+      145  REG   Multimedia\SystemProfile\Tasks\Games SFIO Priority = High
+
+[B23] POWER_HIBER                     warn     1 op     ID 146
+      Режимы: MAX                     Откат: P
+      Guard: CONFIRM по умолчанию Нет; WARN при наличии HDD
+      146  HIB   powercfg -h off
+                 убирает и hiberfil.sys, и Windows Fast Startup
+
+[B24] POWER_DISK                      warn     1 op     ID 147
+      Режимы: MAX                     Откат: P
+      Guard: WARN при наличии HDD
+      147  PWR   SUB_DISK DISKIDLE AC = 0
+
+[B25] POWER_TIMER                     warn     1 op     ID 148
+      Режимы: MAX                     Откат: P
+      Guard: ноутбук -> SKIP; POWER_HAS проверяет наличие GUID
+      148  PWR   SUB_NONE 5d6ed4dc-5c00-4d6f-bc53-3f040f13b5dc AC = 0
+
+[B26] RESERVED                        warn     1 op     ID 149
+      Режимы: MAX                     Откат: M
+      Guard: CONFIRM по умолчанию Нет
+      149  DISM  Set-ReservedStorageState Disabled
+                 прежнее состояние UNKNOWN -> откат пропустит честно
+
+[B27] WORK_IFEO                       warn     1 op     ID 150
+      Режимы: WRK MAX                 Откат: W
+      Guard: WARN про Process Lasso
+      150  REG   Image File Execution Options\<app>\PerfOptions
+                 CpuPriorityClass = 3 для 8 приложений:
+                 chrome.exe msedge.exe firefox.exe WINWORD.EXE
+                 EXCEL.EXE Code.exe Photoshop.exe Discord.exe
+                 одна операция, в журнал попадает каждая запись
+
+[B28] UX_CHAT                         warn     1 op     ID 151
+      Режимы: MAX                     Откат: W
+      Guard: только Win11, иначе SKIP
+      151  REG   HKCU Explorer\Advanced TaskbarMn = 0
+
+[B29] MOUSE                           warn     5 ops    ID 152-156
+      Режимы: MAX                     Откат: G
+      Guard: нет
+      152  REG   HKCU Control Panel\Mouse MouseSpeed = 0
+      153  REG   HKCU Control Panel\Mouse MouseThreshold1 = 0
+      154  REG   HKCU Control Panel\Mouse MouseThreshold2 = 0
+      155  REG   HKCU Control Panel\Mouse SmoothMouseXCurve = 40 нулевых байт
+      156  REG   HKCU Control Panel\Mouse SmoothMouseYCurve = 40 нулевых байт
+                 длина генерируется циклом; в 6.x было 32 байта и твик не работал
+
+[B30] TIMERS                          warn     1 op     ID 157
+      Режимы: MAX                     Откат: M
+      Guard: WARN про конфликт с ISLC
+      157  REG   Session Manager\kernel GlobalTimerResolutionRequests = 1
+
+[B31] NDU                             warn     1 op     ID 158
+      Режимы: MAX                     Откат: N + U
+      Guard: нет
+      158  SVC   Ndu = disabled
+
+[B32] GAMEBAR_RT                      warn     1 op     ID 159
+      Режимы: MAX                     Откат: G
+      Guard: WARN; ветка под TrustedInstaller, идёт через ACL
+      159  ACL   WindowsRuntime\ActivatableClassId\...PresenceWriter
+                 ActivationType = 0
+
+[B33] SERVICES_XBOX                   warn     4 ops    ID 160-163
+      Режимы: MAX                     Откат: U
+      Guard: CONFIRM по умолчанию Нет; отказ = блок не начинается
+      160  SVC   XblAuthManager = disabled
+      161  SVC   XblGameSave = disabled
+      162  SVC   XboxNetApiSvc = disabled
+      163  SVC   ALG = disabled
+                 Game Pass и игры из Store перестанут авторизоваться
+
+[B34] AUDIO                           warn     1 op     ID 164
+      Режимы: MAX                     Откат: нечего откатывать
+      Guard: нет
+      164  SKIP  аудио-улучшения
+                 ключ HKCU\Software\Microsoft\Multimedia\Audio из 6.x
+                 фиктивный: настройка живёт в per-endpoint FxProperties
+                 и зависит от драйвера. Ручная процедура - MANUAL_STEPS
+                 раздел 2. Считается операцией, но ничего не пишет.
+
+[B35] WDI                             warn     1 op     ID 165
+      Режимы: LIT MIN MED WRK MAX     Откат: W
+      Guard: нет
+      165  REG   Control\WMI\Autologger\WDIContextLog Start = 0
+
+[B36] STORPORT                        warn     1 op     ID 166
+      Режимы: MAX                     Откат: M + U
+      Guard: ноутбук -> SKIP
+      166  REG   Services\storport IdleTimeout = 0
+                 значение не документировано Microsoft, WARN в логе
+
+[B37] PREFETCH                        warn     1 op     ID 167
+      Режимы: MAX                     Откат: НЕОБРАТИМО
+      Guard: CONFIRM по умолчанию Нет
+      167  PURGE %WINDIR%\Prefetch\*
+
+[B38] SYSMAIN                         warn     2 ops    ID 168-169
+      Режимы: MAX                     Откат: U
+      Guard: G_ALLSSD (HARD) + G_CONFIRM
+      168  STOP  SysMain
+      169  SVC   SysMain = disabled
+
+[B39] VISUAL_AGG                      warn     3 ops    ID 170-172
+      Режимы: MAX                     Откат: V
+      Guard: профиль Keep или MotionOnly = блок не начинается, 0 операций
+      170  REG   HKCU Themes\Personalize EnableTransparency = 0
+                 только Performance и Balanced, иначе SKIP
+      171  REG   HKCU Control Panel\Desktop MenuShowDelay = 0
+                 только Performance, иначе SKIP
+      172  PROC  перезапуск DWM
+                 транзиентная операция, в журнал не пишется
+
+[B40] NET_GLOBAL                      warn     8 ops    ID 173-180
+      Режимы: MAX                     Откат: N
+      Guard: G_NETWORK
+      Третьим аргументом идёт документированный дефолт Windows:
+      прежнее состояние netsh не читается locale-независимо.
+      173  TCP   ecncapability = disabled
+      174  TCP   timestamps = disabled
+      175  TCP   chimney = disabled            SOFT: на Win10+ нет -> SKIP
+      176  TCP   rss = enabled
+      177  TCP   rsc = disabled
+      178  TCP   fastopen = enabled
+      179  TCP   fastopenfallback = enabled
+      180  FLUSH arp
+
+---------------------------------------------------------------------------
+ DANGER - 14 операций, 8 блоков. Только Advanced Mode.
+---------------------------------------------------------------------------
+
+[B41] VBS                            danger    3 ops    ID 181-183
+      Режимы: MAX                     Откат: S
+      Guard: G_ADVANCED + G_AV (HARD) + G_CONFIRM
+      181  REG   DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity Enabled = 0
+      182  REG   Control\Lsa LsaCfgFlags = 0
+      183  REG   DeviceGuard EnableVirtualizationBasedSecurity = 0
+                 FaceIT и ESEA могут перестать запускаться
+
+[B42] MITIGATIONS                    danger    2 ops    ID 184-185
+      Режимы: MAX                     Откат: S + M
+      Guard: G_ADVANCED + G_AV + G_CONFIRM
+      Выделено из DPC-блока 6.x: разные риски, разный откат.
+      184  REG   Memory Management FeatureSettingsOverride = 3
+      185  REG   Memory Management FeatureSettingsOverrideMask = 3
+
+[B43] BCD_TIMERS                     danger    3 ops    ID 186-188
+      Режимы: MAX                     Откат: B
+      Guard: G_ADVANCED + G_NOTLAPTOP + G_ACPOWER + G_CONFIRM + BCD_SUSPEND
+      186  BCD   disabledynamictick = yes
+      187  BCD   useplatformclock = no
+      188  BCD   useplatformtick = no
+                 только intel_old и zen_old, иначе SKIP
+                 в 6.x DPC ставил yes, а HPET_SMART следом no
+
+[B44] BCD_TSC                        danger    1 op     ID 189
+      Режимы: MAX                     Откат: B
+      Guard: G_ADVANCED + CPU_SERIES>0 + G_NOTLAPTOP + G_CONFIRM + BCD_SUSPEND
+      189  BCD   tscsyncpolicy = Enhanced
+
+[B45] BCD_BOOT                       danger    2 ops    ID 190-191
+      Режимы: MAX                     Откат: B
+      Guard: G_ADVANCED + G_CONFIRM + BCD_SUSPEND
+      190  BCD   tpmbootentropy = ForceDisable
+      191  BCD   bootuxdisabled = on
+
+[B46] GPU_ULPS                       danger    1 op     ID 192
+      Режимы: MAX                     Откат: G
+      Guard: G_GPU_VENDOR AMD (INFO) + G_ACPOWER; WARN на ноутбуке
+      192  REG   Class\{4d36e968}\<все AMD экземпляры> EnableUlps = 0
+                 одна операция, журнал по каждому экземпляру
+                 не в слепой 0000, где мог оказаться iGPU
+
+[B47] GPU_HDCP                       danger    1 op     ID 193
+      Режимы: MAX                     Откат: G
+      Guard: G_GPU_VENDOR NVIDIA (INFO) + G_CONFIRM
+      193  REG   Class\{4d36e968}\<все NVIDIA экземпляры>
+                 RMHdcpKeyGlob = 00000000
+                 Netflix, Disney+, Amazon Prime перестанут выводить картинку
+
+[B48] MSI_GPU                        danger    1 op     ID 194
+      Режимы: MAX                     Откат: G
+      Guard: G_ADVANCED + G_HWID (HARD) + G_CONFIRM,
+             на ноутбуке второй G_CONFIRM
+      194  ACL   Enum\PCI\<GPU_HWID>\...\MessageSignaledInterruptProperties
+                 MSISupported = 1
+                 владелец ветки и ACE возвращаются в finally при любом исходе
+
+---------------------------------------------------------------------------
+ EXP - 14 операций, 12 блоков. В режимы НЕ входят, только меню [Q].
+---------------------------------------------------------------------------
+
+[B49] EXP_DWM                          exp       1 op     ID 196
+      Откат: V + G                    Guard: G_ADVANCED + G_CONFIRM
+      196  REG   HKLM\SOFTWARE\Microsoft\Windows\DWM OverlayTestMode = 5
+                 артефакты на части GPU
+
+[B50] EXP_NX                           exp       1 op     ID 197
+      Откат: B + S                    Guard: G_ADVANCED + G_AV + G_CONFIRM + BCD_SUSPEND
+      197  BCD   nx = OptOut
+
+[B51] EXP_PAGING_ENC                   exp       1 op     ID 198
+      Откат: M + S                    Guard: G_ADVANCED + G_CONFIRM
+      198  FSU   encryptpagingfile = 0
+                 pagefile становится читаемым
+
+[B52] EXP_DEF_SCRIPT                   exp       1 op     ID 199
+      Откат: S                        Guard: G_ADVANCED + G_TAMPER + G_AV + G_CONFIRM
+      199  DEF   DisableScriptScanning = true
+
+[B53] EXP_TSC_LEGACY                   exp       1 op     ID 200
+      Откат: B                        Guard: G_ADVANCED + G_CPU_OLD 11/4000 (HARD)
+                                             + G_NOTLAPTOP + G_CONFIRM + BCD_SUSPEND
+      200  BCD   tscsyncpolicy = Legacy
+
+[B54] EXP_SEHOP                        exp       1 op     ID 201
+      Откат: S + M                    Guard: G_ADVANCED + G_AV + G_CONFIRM
+      201  REG   Session Manager\kernel DisableExceptionChainValidation = 1
+
+[B55] EXP_HETERO                       exp       1 op     ID 202
+      Откат: M                        Guard: G_ADVANCED + G_CPU_HYBRID (HARD)
+                                             + G_BUILD 22000 (HARD) + G_CONFIRM
+      202  REG   Session Manager\kernel
+                 DisableHeterogeneousThreadScheduling = 1
+
+[B56] EXP_DEF_RT                       exp       1 op     ID 203
+      Откат: S                        Guard: G_ADVANCED + G_TAMPER
+                                             + G_AV_THIRD (HARD) + G_CONFIRM
+      203  DEF   DisableRealtimeMonitoring = true
+                 без стороннего AV система останется без защиты вообще
+
+[B57] EXP_CSTATES                      exp       1 op     ID 204
+      Откат: B + P                    Guard: G_ADVANCED + G_NOTLAPTOP + G_ACPOWER
+                                             + G_CONFIRM + BCD_SUSPEND
+      204  BCD   disabledynamictick = yes
+           PWR   SUB_PROCESSOR IDLEDISABLE AC = 1
+                 составная: одна операция, две записи в журнале
+
+[B58] EXP_POOL                         exp       2 ops    ID 205-206
+      Откат: M                        Guard: G_ADVANCED + G_RAM 32 (HARD)
+                                             + G_RAM_SOFT 64 + G_CONFIRM
+      205  REG   Memory Management PoolUsageMaximum = 4294967295
+      206  REG   Memory Management PagedPoolSize = 4294967295
+
+[B59] EXP_SUPERFETCH                   exp       1 op     ID 207
+      Откат: M                        Guard: G_ADVANCED + G_ALLSSD (HARD)
+                                             + G_RAM_SOFT 16 + G_CONFIRM
+      207  REG   PrefetchParameters EnableSuperfetch = 0
+                 запрещает Windows включать кэш предзагрузки обратно
+
+[B60] EXP_ULTIMATE                     exp       2 ops    ID 208-209
+      Откат: P                        Guard: G_ADVANCED + G_NOTLAPTOP
+                                             + G_ACPOWER + G_CONFIRM
+      208  NEWPWR создать схему Ultimate Performance
+                 если уже существует -> SKIP, копии не плодим
+      209  NEWPWR активировать схему
+                 порядок журнала: POWERNEW, затем POWERSCHEME.
+                 Reverse-replay сначала вернёт прежний план, потом удалит
+                 созданный: иначе powercfg откажется удалять активный.
+
+[B61] SMB1                            safe     1 op     ID 210
+      Режимы: LIT MIN MED WRK MAX     Откат: журнал
+      Guard: нет. WARN про старый NAS и сетевые принтеры по SMB1.
+      Агрегат: две записи свёрнуты в одну операцию.
+      210  REG+SC  LanmanServer\Parameters SMB1 = 0; mrxsmb10 Start = 4
+
+[B62] IFEO_ECO                        safe     1 op     ID 211
+      Режимы: LIT MIN MED WRK MAX     Откат: журнал
+      Guard: нет. Приближение Efficiency Mode, не EcoQoS.
+      Агрегат: 24 записи для 8 апдейтеров свёрнуты в одну операцию.
+      211  REG   IFEO\<app>\PerfOptions CpuPriorityClass=5 IoPriority=1 PagePriority=3
+
+[B63] AUTORUN                         safe     8 ops    ID 212-219
+      Режимы: MIN MED WRK MAX          Откат: журнал
+      Guard: нет. Whitelist по имени плюс валидная подпись файла.
+      Исключены: SecurityHealth, Defender, BlockTelemetry, Process Lasso,
+      ISLC, Windhawk, браузерные апдейтеры, драйверные хелперы.
+      Агрегаты: одна операция на источник, число записей не влияет.
+      212  REGDEL HKCU\CurrentVersion\Run кандидаты whitelist
+      213  REGDEL HKCU\CurrentVersion\RunOnce кандидаты whitelist
+      214  REGDEL HKLM\CurrentVersion\Run кандидаты whitelist
+      215  REGDEL HKLM\CurrentVersion\RunOnce кандидаты whitelist
+      216  REGDEL HKLM\Wow6432Node\CurrentVersion\Run кандидаты whitelist
+      217  LNKMOVE Startup пользователя в подпапку Disabled
+      218  LNKMOVE Startup общий в подпапку Disabled
+      219  TASK   задачи с logon-триггером из whitelist
+
+[B64] STORAGE_SAFE                    safe     4 ops    ID 220-223
+      Режимы: MIN MED WRK MAX          Откат: необратимо, кэши регенерируются
+      Guard: нет. WARN про микрофриз после чистки кэша шейдеров.
+      Temp, шрифты и миниатюры не дублируются: их чистит B16 MAINT.
+      Агрегаты: одна операция на группу путей.
+      220  PURGE  Delivery Optimization Cache, два возможных пути
+      221  PURGE  WER ReportQueue, ReportArchive, CrashDumps
+      222  PURGE  SoftwareDistribution\Download
+      223  PURGE  D3DSCache, AMD DxCache, NVIDIA DXCache
+
+[B65] STORAGE_DEEP                    warn     6 ops    ID 224-229
+      Режимы: MED MAX                  Откат: необратимо
+      Guard: G_CONFIRM на ResetBase и Windows.old, нужен Advanced и YES.
+      DISM код 3010 считается успехом с требованием перезагрузки.
+      224  DISM   /StartComponentCleanup
+      225  DISM   /StartComponentCleanup /ResetBase, обновления станут неудаляемыми
+      226  PURGEDIR Windows.old
+      227  PURGEDIR $Windows.~BT и $Windows.~WS, агрегат
+      228  PURGE  SoftwareDistribution\DataStore
+      229  PURGE  Logs\CBS, Logs\DISM, Panther, агрегат
+
+[B66] SERVICES_EXT                    warn    20 ops    ID 230-249
+      Режимы: MAX                      Откат: U службы
+      Guard: факт наличия устройства. Значение -1 неизвестно и означает НЕ отключать.
+      Каждая служба считается отдельно, при блокировке группы даёт SKIP по каждой.
+      230-232  SVC  ScDeviceEnum SCPolicySvc CertPropSvc, факт FT_SMARTCARD и FT_DOMAIN
+      233-235  SVC  bthserv BTAGService BthAvctpSvc, факт FT_BT
+      236-238  SVC  TermService SessionEnv UmRdpService, факт FT_RDP
+      239-240  SVC  WbioSrvc SEMgrSvc, факты FT_BIOMETRIC и FT_NFC
+      241-243  SVC  TapiSrv PhoneSvc SmsRouter, факт FT_MODEM
+      244-246  SVC  lfsvc SensorService SensrSvc, факт FT_SENSOR
+      247-249  SVC  MapsBroker TrkWks WpcMonSvc, без гварда, WARN
+
+[B67] PROVISIONED                     warn    30 ops    ID 250-279
+      Режимы: MAX                      Откат: необратимо, восстановление через Store или образ
+      Guard: G_CONFIRM на ярус B. Whitelist зависимостей внутри verb, второй слой защиты.
+      Не трогаются никогда: WindowsStore, StorePurchaseApp, DesktopAppInstaller winget,
+      SecHealthUI, VCLibs, NET.Native, UI.Xaml, WindowsAppRuntime, AAD.BrokerPlugin,
+      LockApp, StartMenuExperienceHost, ShellExperienceHost, CloudExperienceHost,
+      OOBENetwork, AppRep.ChxApp SmartScreen, XboxGameCallableUI, BioEnrollment, Edge.
+      250-266  APPXPROV ярус A, 17 мусорных семейств
+      267-279  APPXPROV ярус B, 13 функциональных, только через YES
+
+[B68] NIC_DRIVER                      warn    14 ops    ID 280-293
+      Режимы: MAX                      Откат: N сеть
+      Guard: только физический Ethernet, три фильтра. На ноутбуке G_CONFIRM с YES.
+      Имена значений ищутся по алиасам: NDIS со звёздочкой, Realtek без и иначе.
+      Отсутствующие ключи не создаются. Flow Control и WoL не трогаются.
+      280  REG  *InterruptModeration = 0
+      281  REG  *EEE или EEE = 0
+      282  REG  AdvancedEEE = 0
+      283  REG  EnableGreenEthernet или GreenEthernet = 0
+      284  REG  GigaLite или GigabitLite = 0
+      285  REG  PowerDownPll = 0
+      286  REG  SelectiveSuspend или PowerSavingMode = 0
+      287  REG  *PMARPOffload = 0
+      288  REG  *PMNSOffload = 0
+      289  REG  *RscIPv4 = 0
+      290  REG  *RscIPv6 = 0
+      291  REG  ASPM = 0
+      292  REG  CLKREQ = 0
+      293  REG  *RSS = 1, SKIP на одноочередных Realtek GbE
+
+[B69] DO_PEERING                      safe     2 ops    ID 294-295
+      Режимы: MIN MED WRK MAX          Откат: N сеть
+      Guard: нет. Служба DoSvc не отключается, обновления работают.
+      Мотивация: раздача пирам забивает исходящий канал и таблицу NAT
+      бытового роутера, что даёт провалы скорости во всех приложениях.
+      294  KEY   Policies\Microsoft\Windows\DeliveryOptimization
+      295  REG   DODownloadMode = 0, только HTTP с CDN, без peer caching
+
+---------------------------------------------------------------------------
+ КОНТРОЛЬ ПО КАТЕГОРИЯМ
+---------------------------------------------------------------------------
+
+  SAFE                  24 блока    148 операций
+  WARN                  25 блоков   116 операций
+  DANGER    B41-B48     8 блоков    14 операций    ID 181-194
+  EXP       B49-B60    12 блоков    14 операций    ID 196-209
+  ------------------------------------------------------------------
+  ВСЕГО                69 блоков   292 операции
+
+  Метки в коде:
+    tweaks_safe.cmd    :: END OF FILE | Всего твиков в файле: 148
+    tweaks_warn.cmd    :: END OF FILE | Всего твиков в файле: 116
+    tweaks_danger.cmd  :: END OF FILE | Всего твиков в файле: 14
+    tweaks_exp.cmd     :: END OF FILE | Всего твиков в файле: 14
+
+---------------------------------------------------------------------------
+ СОСТАВ РЕЖИМОВ ПО БЛОКАМ
+---------------------------------------------------------------------------
+
+LITE - 60 операций, 9 блоков:
+  B61 SMB1 1, B62 IFEO_ECO 1,
+  B01 TELEMETRY 24, B02 NET_STD 10, B04 POWER 5, B06 UWP selective 6,
+  B07 SCHTASKS 7, B17 INPUT 5, B35 WDI 1
+
+MINIMUM - 114 операций, 20 блоков:
+  B61 SMB1 1, B62 IFEO_ECO 1, B63 AUTORUN 8, B64 STORAGE_SAFE 4, B69 DO_PEERING 2,
+  B01 24, B07 7, B14 UX 6, B18 PRIVACY_EXT 5, B17 INPUT 5,
+  B02 NET_STD 10, B03 NET_PORTS 4, B19 WEBDAV 1, B04 POWER 5,
+  B05 POWER_THROTTLE 2, B06 UWP full 13, B08 DEFENDER_EXC 10,
+  B09 SERVICES 3, B10 SPOOLER 2, B35 WDI 1
+
+MEDIUM - 155 операций, 26 блоков:
+  MINIMUM 114 + B65 STORAGE_DEEP 6 + B13 GAMING 10 + B12 VISUAL 10 + B20 PRIORITY 2
+  + B22 MMCSS 4 + B16 MAINT 9
+  На слабом ПК визуал идёт в профиле Comfort.
+
+WORK - 124 операции, 24 блока:
+  B61 SMB1 1, B62 IFEO_ECO 1, B63 AUTORUN 8, B64 STORAGE_SAFE 4, B69 DO_PEERING 2,
+  B01 24, B07 7, B14 6, B18 5, B17 5, B02 10, B03 4, B19 1,
+  B04 5, B05 2, B06 UWP selective 6, B09 3, B10 2, B35 1,
+  B15 WORK 5, B27 WORK_IFEO 1, B12 VISUAL Work 10, B20 PRIORITY 2,
+  B16 MAINT 9
+  Без исключений Defender и без игровых блоков.
+
+MAXIMUM - 278 номинальных операций, 57 блоков:
+  все SAFE (24) + все WARN (25) + все DANGER (8)
+  Профиль визуала выбирается при запуске.
+  При Keep блоки B12 и B39 не начинаются: 278 - 13 = 265 операций.
+
+EXPERIMENTAL - 14 операций, 12 блоков:
+  B49-B60, по одному через меню [Q]. В режимы не входит.
+
+---------------------------------------------------------------------------
+ ПОКРЫТИЕ ГРУПП ОТКАТА
+---------------------------------------------------------------------------
+
+  V визуал          B12 VISUAL, B39 VISUAL_AGG, B49 E_DWM,
+                    часть B15 (WaitToKillAppTimeout)
+  N сеть            B02, B03, B31 NDU, B40 NET_GLOBAL, B19 WEBDAV,
+                    часть B15 (supplemental)
+  P питание         B04, B05, B23, B24, B25, B57 E_CSTATES, B60 E_ULTIMATE
+  B BCD             B43, B44, B45, B50 E_NX, B53 E_TSC_LEGACY,
+                    B57 E_CSTATES, приостановка BitLocker
+  S безопасность    B08 DEFENDER_EXC, B41 VBS, B42 MITIGATIONS,
+                    B50, B51, B52, B54, B56
+  G игры и GPU      B13 GAMING, B20 PRIORITY, B22 MMCSS, B29 MOUSE,
+                    B32 GAMEBAR_RT, B46 ULPS, B47 HDCP, B48 MSI,
+                    B49 E_DWM, часть B15 (HwSchMode)
+  M память и NTFS   B16 MAINT (fsutil), B21 MEMORY, B26 RESERVED,
+                    B30 TIMERS, B36 STORPORT, B42, B51, B54, B55,
+                    B58 E_POOL, B59 E_SUPERFETCH
+  U службы          B09, B10, B11, B31, B33, B36, B38,
+                    часть B01 (DiagTrack), часть B15 (WSearch, таймаут)
+  W UX и телеметрия B01, B07 SCHTASKS, B14 UX, B17 INPUT,
+                    B18 PRIVACY_EXT, B27 WORK_IFEO, B28 UX_CHAT, B35 WDI
+
+  НЕОБРАТИМО, откат не вернёт:
+    B06 UWP (список в appx_removed.txt)
+    B16 MAINT: удаление TEMP, кэшей шрифтов и миниатюр
+    B37 PREFETCH
+    salvage репозитория WMI из [K]
+    сброс сети из [D]
+
+  Одна запись может входить в несколько групп. Это нормально:
+  ключ службы Tcpip - это и N, и U. Откат по любой из них его вернёт.
+
+---------------------------------------------------------------------------
+ КАК СВЕРИТЬ ФАКТ С ЭТИМ ФАЙЛОМ
+---------------------------------------------------------------------------
+
+  1. winpulse.bat /dryrun
+     В каждом блоке строка: -- ИМЯ: ok=N fail=N skip=N plan=N
+     Сумма должна равняться числу ops из карточки блока.
+     WARN про расхождение = потерянная или лишняя операция.
+
+  2. python AUDIT.py
+     Сверяет метки, счётчики в END OF FILE, кодировки, карту меню.
+     Семантику не проверяет.
+
+  3. WinPulse -> [S] Состояние твиков
+     Читает те же пути, куда писал, с нормализацией hex.
+
+  4. WinPulse -> [U] История сессий -> [V]
+     Журнал сессии построчно. Число записей может быть БОЛЬШЕ числа
+     операций: агрегированные операции (025, 026, 150, 192, 193, 204)
+     пишут в журнал по записи на каждый объект, а считаются одной.
+
+===========================================================================
+ WinPulse 7.1 "Rebuild"
+ Инвентарь: 292 операции, 69 блоков
+ Автоматическая часть - README.txt, ручные шаги - MANUAL_STEPS.txt
+===========================================================================
